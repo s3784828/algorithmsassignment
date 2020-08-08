@@ -10,19 +10,33 @@ import java.util.List;
  */
 public class ArrayMultiset extends RmitMultiset
 {
+	protected String array[];
+	protected int arrayLength;
+	protected static final int initialArraySize = 10;
+	
+	public ArrayMultiset()
+	{
+		array = new String[initialArraySize];
+	}
 
     @Override
 	public void add(String elem) {
         // Implement me!
+		array[arrayLength] = elem;
+		arrayLength += 1;
     } // end of add()
 
 
     @Override
 	public int search(String elem) {
         // Implement me!
-
-        // Placeholder, please update.
-        return searchFailed;
+    	int instanceCount = 0;
+    	for (int i = 0; i < arrayLength; i++)
+    	{
+    		if (array[i] != null && array[i] == elem)
+    			instanceCount += 1;
+    	}
+        return instanceCount;
     } // end of search()
 
 
@@ -36,24 +50,44 @@ public class ArrayMultiset extends RmitMultiset
 
     @Override
 	public boolean contains(String elem) {
-        // Implement me!
-
-        // Placeholder, please update.
-        return false;
+        boolean contains = false;
+        for (int i = 0; i < arrayLength; i++) 
+        {
+        	if (!contains && array[i] != null && array[i] == elem)
+        		contains = true;
+        }
+        return contains;
     } // end of contains()
 
 
     @Override
 	public void removeOne(String elem) {
-        // Implement me!
+    	boolean removedOne = false;
+        for (int i = 0; i < arrayLength; i++)
+        {
+        	if (!removedOne && array[i] != null && array[i] == elem)
+        	{
+        		removedOne = true;
+        		array[i] = null;
+        	}
+        }
     } // end of removeOne()
 
 
     @Override
 	public String print() {
-
-        // Placeholder, please update.
-        return new String();
+    	String arrayString = "";
+    	for (int i = 0; i < arrayLength; i++)
+    	{
+    		if (array[i] != null)
+    			
+    			if (i > 0)
+    				arrayString += " " + array[i];
+    			else
+    				arrayString += array[i];
+    	}
+        
+        return arrayString;
     } // end of OrderedPrint
 
 
