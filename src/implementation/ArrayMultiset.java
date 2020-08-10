@@ -42,11 +42,62 @@ public class ArrayMultiset extends RmitMultiset
 
     @Override
     public List<String> searchByInstance(int instanceCount) {
-
-        // Placeholder, please update.
-        return null;
+    	List<String> list = new SimpleLinkList<String>();
+    	String[] uniqueValues = new String[arrayLength];
+    	int uniqueValuesLength = 0;
+    	for (int i = 0; i < arrayLength; i++)
+    	{
+    		if (array[i] != null)
+    		{
+    			if (uniqueValuesLength == 0)
+    			{
+    				uniqueValues[0] = array[i];
+    				uniqueValuesLength += 1;
+    			}
+    			else
+    			{
+    				boolean addedValue = false;
+    				for (int j = 0; j < uniqueValuesLength; j++)
+    				{
+    					System.out.println("bout to check uniq: " + uniqueValues[j] + " array: " + array[i]);
+    					System.out.println(addedValue);
+    					if (uniqueValues[j] == array[i])
+    					{
+    						System.out.println("uniq: " + uniqueValues[j] + " array: " + array[i]);
+    						addedValue = true;
+    						System.out.println(addedValue);
+    					}
+    				}
+    				if (addedValue)
+    				{
+    					uniqueValues[uniqueValuesLength] = array[i];
+    					uniqueValuesLength += 1;
+    				}
+    			}
+    		}
+    	}
+    	System.out.println("unique values length: " + uniqueValuesLength);
+    	String selectedInstance;
+    	int numInstance = 0;
+    	for (int i = 0; i < uniqueValuesLength; i++)
+    	{
+    		selectedInstance = uniqueValues[i];
+    		for (int j = 0; j < arrayLength; j++)
+    		{
+    			if (array[j] != null && array[j] == selectedInstance)
+    			{
+    				numInstance += 1;
+    			}
+    		}
+    		if (numInstance == instanceCount)
+    		{
+    			list.add(selectedInstance);
+    		}
+    		numInstance = 0;
+    	}
+    	System.out.println("value: " + list.toString() + " count: " + list.size());
+        return list;
     } // end of searchByInstance
-
 
     @Override
 	public boolean contains(String elem) {
