@@ -21,7 +21,6 @@ public class ArrayMultiset extends RmitMultiset
 
     @Override
 	public void add(String elem) {
-        // Implement me!
 		array[arrayLength] = elem;
 		arrayLength += 1;
     } // end of add()
@@ -49,34 +48,22 @@ public class ArrayMultiset extends RmitMultiset
     	{
     		if (array[i] != null)
     		{
-    			if (uniqueValuesLength == 0)
+    			String selectedValue = array[i];
+    			boolean addValue = true;
+    			for (int j = 0; j < uniqueValuesLength; j++)
     			{
-    				uniqueValues[0] = array[i];
-    				uniqueValuesLength += 1;
+    				if (uniqueValues[j].equals(selectedValue))
+    				{
+    					addValue = false;
+    				}
     			}
-    			else
+    			if (addValue)
     			{
-    				boolean addedValue = false;
-    				for (int j = 0; j < uniqueValuesLength; j++)
-    				{
-    					System.out.println("bout to check uniq: " + uniqueValues[j] + " array: " + array[i]);
-    					System.out.println(addedValue);
-    					if (uniqueValues[j] == array[i])
-    					{
-    						System.out.println("uniq: " + uniqueValues[j] + " array: " + array[i]);
-    						addedValue = true;
-    						System.out.println(addedValue);
-    					}
-    				}
-    				if (addedValue)
-    				{
-    					uniqueValues[uniqueValuesLength] = array[i];
-    					uniqueValuesLength += 1;
-    				}
+    				uniqueValues[uniqueValuesLength] = selectedValue;
+    				uniqueValuesLength += 1;
     			}
     		}
     	}
-    	System.out.println("unique values length: " + uniqueValuesLength);
     	String selectedInstance;
     	int numInstance = 0;
     	for (int i = 0; i < uniqueValuesLength; i++)
@@ -84,7 +71,7 @@ public class ArrayMultiset extends RmitMultiset
     		selectedInstance = uniqueValues[i];
     		for (int j = 0; j < arrayLength; j++)
     		{
-    			if (array[j] != null && array[j] == selectedInstance)
+    			if (array[j] != null && array[j].equals(selectedInstance))
     			{
     				numInstance += 1;
     			}
@@ -104,7 +91,7 @@ public class ArrayMultiset extends RmitMultiset
         boolean contains = false;
         for (int i = 0; i < arrayLength; i++) 
         {
-        	if (!contains && array[i] != null && array[i] == elem)
+        	if (!contains && array[i] != null && array[i].equals(elem))
         		contains = true;
         }
         return contains;
@@ -116,7 +103,7 @@ public class ArrayMultiset extends RmitMultiset
     	boolean removedOne = false;
         for (int i = 0; i < arrayLength; i++)
         {
-        	if (!removedOne && array[i] != null && array[i] == elem)
+        	if (!removedOne && array[i] != null && array[i].equals(elem))
         	{
         		removedOne = true;
         		array[i] = null;
@@ -131,11 +118,12 @@ public class ArrayMultiset extends RmitMultiset
     	for (int i = 0; i < arrayLength; i++)
     	{
     		if (array[i] != null)
-    			
+    		{
     			if (i > 0)
     				arrayString += " " + array[i];
     			else
     				arrayString += array[i];
+    		}
     	}
         
         return arrayString;
@@ -145,7 +133,7 @@ public class ArrayMultiset extends RmitMultiset
     @Override
 	public String printRange(String lower, String upper) {
 
-        // Placeholder, please update.
+        
         return new String();
     } // end of printRange()
 
