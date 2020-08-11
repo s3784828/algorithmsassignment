@@ -117,12 +117,14 @@ public class ArrayMultiset extends RmitMultiset
     	String arrayString = "";
     	for (int i = 0; i < arrayLength; i++)
     	{
+    		
+    	}
+    	
+    	for (int i = 0; i < arrayLength; i++)
+    	{
     		if (array[i] != null)
     		{
-    			if (i > 0)
-    				arrayString += " " + array[i];
-    			else
-    				arrayString += array[i];
+    			
     		}
     	}
         
@@ -140,9 +142,22 @@ public class ArrayMultiset extends RmitMultiset
 
     @Override
 	public RmitMultiset union(RmitMultiset other) {
-
-        // Placeholder, please update.
-        return null;
+    	
+    	RmitMultiset union = new ArrayMultiset();
+    	String selectedValue = "";
+    	for (int i = 0; i < arrayLength; i++)
+    	{
+    		if (array[i] != null)
+    		{
+    			selectedValue = array[i];
+    			if (other.contains(selectedValue))
+    			{
+    				union.add(selectedValue);
+    			}    			
+    		}	
+    	}
+        
+        return union;
     } // end of union()
 
 
