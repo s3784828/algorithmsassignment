@@ -10,50 +10,139 @@ import java.util.List;
  */
 public class OrderedLinkedListMultiset extends RmitMultiset
 {
+	private Node head;
+	private int length;
+	
+	public OrderedLinkedListMultiset() {
+		head = null;
+		length = 0;
+	}
 
     @Override
 	public void add(String item) {
-        // Implement me!
+    	boolean added = false;
+		
+		if ( head == null )
+		{
+			head = new Node(item);
+			added = true;
+		}
+		else 
+		{
+			Node currNode = head;
+			while(currNode != null && !added)
+			{
+				if (currNode.next == null)
+				{
+					currNode.next = new Node(item);
+					added = true;
+				}
+				// checks if the value variable is before the next node alphabetically
+				else if(!added && currNode.next.value.compareToIgnoreCase(item) <= 0) {
+					
+					Node tempNode = currNode.next;
+					Node newNode = new Node(item);
+					currNode.next = newNode;
+					newNode.next = tempNode;
+					added = true;
+				}
+				else
+				{
+					currNode = currNode.next;
+				}
+			}
+		}
+		length += 1;
     } // end of add()
 
 
     @Override
 	public int search(String item) {
-        // Implement me!
+        int count = 0;
+        Node currNode = head;
+        while(currNode != null) {
+        	if(currNode.value.equals(item)) {
+        		count++;
+        	}
+        	currNode = currNode.next;
+        }
 
         // Placeholder, please update.
-        return searchFailed;
+        return count;
     } // end of search()
 
 
     @Override
 	public List<String> searchByInstance(int instanceCount) {
-
-        // Placeholder, please update.
-        return null;
+    	List<String> list = new SimpleLinkList<String>();
+    	Node currNode = head;
+    	while(currNode != null) {
+    		int count = 1;
+    		//continues counting until next node's value isn't equal to it's own
+    		while(currNode.value.equals(currNode.next.value)) {
+    			count++;
+    			currNode = currNode.next;
+    		}
+    		if(count == instanceCount) {
+    			list.add(currNode.value);
+    		}
+    		currNode = currNode.next;
+    	}
+        
+        return list;
     } // end of searchByInstance
 
 
     @Override
 	public boolean contains(String item) {
-        // Implement me!
-
-        // Placeholder, please update.
-        return false;
+        boolean doesContain = false;
+    	Node currNode = head;
+        
+        while(currNode != null) {
+        	if(currNode.value.equals(item)) {
+        		doesContain = true;
+        	}
+        }
+    	
+        return doesContain;
     } // end of contains()
 
 
     @Override
 	public void removeOne(String item) {
-        // Implement me!
+    	boolean removed = false;
+    	Node currNode = head;
+    	Node prevNode = null;
+    	//for if the head is the item
+    	if(head.value == item) {
+    		head = head.next;
+    		removed = true;
+    	}
+        while(!removed && currNode != null) {
+        	if(currNode.value.equals(item)) {
+        		prevNode.next = currNode.next;
+        		removed = true;
+        	}
+        	prevNode = currNode;
+        	currNode = currNode.next;
+        }
+        
+        if(removed) {
+        	length--;
+        }
     } // end of removeOne()
 
 
     @Override
 	public String print() {
-
+    	String result = "";
+    	Node currNode = head;
+    	while(currNode != null) {
+    		result += currNode.value + " ";
+    		currNode = currNode.next;
+    	}
         // Placeholder, please update.
-        return new String();
+        return result;
     } // end of OrderedPrint
 
 
@@ -87,5 +176,15 @@ public class OrderedLinkedListMultiset extends RmitMultiset
         // Placeholder, please update.
         return null;
     } // end of difference()
+    
+    private class Node{
+    	protected String value;
+    	protected Node next;
+    	
+    	public Node(String _value){
+    		value = _value;
+    		next = null;
+    	}
+    }
 
 } // end of class OrderedLinkedListMultiset
