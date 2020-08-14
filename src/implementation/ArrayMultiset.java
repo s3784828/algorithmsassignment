@@ -12,77 +12,56 @@ public class ArrayMultiset extends RmitMultiset
 {
 	protected String array[];
 	protected int arrayLength;
+	protected int instanceCount;
 	protected static final int initialArraySize = 10;
 	
 	public ArrayMultiset()
 	{
 		array = new String[initialArraySize];
+		arrayLength = 0;
+		instanceCount = 0;
 	}
 
     @Override
 	public void add(String elem) {
 		array[arrayLength] = elem;
 		arrayLength += 1;
+		instanceCount += 1;
     } // end of add()
 
 
     @Override
 	public int search(String elem) {
         // Implement me!
-    	int instanceCount = 0;
+    	int dupCount = 0;
     	for (int i = 0; i < arrayLength; i++)
     	{
-    		if (array[i] != null && array[i] == elem)
-    			instanceCount += 1;
+    		if (array[i] != null && array[i].equals(elem))
+    			dupCount += 1;
     	}
-        return instanceCount;
+        return dupCount;
     } // end of search()
 
 
     @Override
     public List<String> searchByInstance(int instanceCount) {
     	List<String> list = new SimpleLinkList<String>();
-    	String[] uniqueValues = new String[arrayLength];
-    	int uniqueValuesLength = 0;
+    	String selectedInstance;
+    	int dupCount = 0;
+    	String uniqueValues[] = getUniqueValues();
     	for (int i = 0; i < arrayLength; i++)
     	{
-    		if (array[i] != null)
+    		if (uniqueValues[i] != null)
     		{
-    			String selectedValue = array[i];
-    			boolean addValue = true;
-    			for (int j = 0; j < uniqueValuesLength; j++)
-    			{
-    				if (uniqueValues[j].equals(selectedValue))
-    				{
-    					addValue = false;
-    				}
-    			}
-    			if (addValue)
-    			{
-    				uniqueValues[uniqueValuesLength] = selectedValue;
-    				uniqueValuesLength += 1;
-    			}
+    			selectedInstance = uniqueValues[i];
+        		dupCount = search(selectedInstance);
+        		if (dupCount == instanceCount)
+        		{
+        			list.add(selectedInstance);
+        		}
+        		dupCount = 0;	
     		}
     	}
-    	String selectedInstance;
-    	int numInstance = 0;
-    	for (int i = 0; i < uniqueValuesLength; i++)
-    	{
-    		selectedInstance = uniqueValues[i];
-    		for (int j = 0; j < arrayLength; j++)
-    		{
-    			if (array[j] != null && array[j].equals(selectedInstance))
-    			{
-    				numInstance += 1;
-    			}
-    		}
-    		if (numInstance == instanceCount)
-    		{
-    			list.add(selectedInstance);
-    		}
-    		numInstance = 0;
-    	}
-    	System.out.println("value: " + list.toString() + " count: " + list.size());
         return list;
     } // end of searchByInstance
 
@@ -114,29 +93,39 @@ public class ArrayMultiset extends RmitMultiset
 
     @Override
 	public String print() {
-    	String arrayString = "";
+        
+    	String toPrint = "";
+    	String toPrintArray[] = getUniqueValues();
     	for (int i = 0; i < arrayLength; i++)
     	{
-    		
-    	}
-    	
-    	for (int i = 0; i < arrayLength; i++)
-    	{
-    		if (array[i] != null)
+    		if (toPrintArray[i] != null)
     		{
-    			
+    			String selectedInstance = toPrintArray[i];
+    			toPrint += selectedInstance + ":" + search(selectedInstance) + "\n";
     		}
     	}
-        
-        return arrayString;
+        return toPrint;
     } // end of OrderedPrint
 
 
     @Override
 	public String printRange(String lower, String upper) {
+        String range = "";
+        String uniqueValues[] = getUniqueValues();
+        for (int i = 0; i < arrayLength; i++)
+        {
+        	if (uniqueValues[i] != null)
+        	{
+        		String value = uniqueValues[i];
+        		
+        		if (value.compareToIgnoreCase(lower) >= 0 && value.compareToIgnoreCase(upper) <= 0)
+        		{
+        			range += value + ":" + search(value) + "\n";
+        		}
+        	}
+        }
 
-        
-        return new String();
+        return range;
     } // end of printRange()
 
 
@@ -175,5 +164,32 @@ public class ArrayMultiset extends RmitMultiset
         // Placeholder, please update.
         return null;
     } // end of difference()
+    
+    private String[] getUniqueValues()
+    {
+    	String[] uniqueValues = new String[arrayLength];
+    	int uniqueValuesLength = 0;
+    	for (int i = 0; i < arrayLength; i++)
+    	{
+    		if (array[i] != null)
+    		{
+    			String selectedValue = array[i];
+    			boolean addValue = true;
+    			for (int j = 0; j < uniqueValuesLength; j++)
+    			{
+    				if (uniqueValues[j].equals(selectedValue))
+    				{
+    					addValue = false;
+    				}
+    			}
+    			if (addValue)
+    			{
+    				uniqueValues[uniqueValuesLength] = selectedValue;
+    				uniqueValuesLength += 1;
+    			}
+    		}
+    	}
+    	return uniqueValues;
+    }
 
 } // end of class ArrayMultiset

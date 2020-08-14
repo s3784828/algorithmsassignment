@@ -149,7 +149,8 @@ public class OrderedLinkedListMultiset extends RmitMultiset
     @Override
 	public String printRange(String lower, String upper) {
 
-        // Placeholder, please update.
+        String range = "";
+        //String uniqueValues[] = getUniqueValues();
         return new String();
     } // end of printRange()
 
