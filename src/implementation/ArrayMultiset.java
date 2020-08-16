@@ -19,20 +19,19 @@ public class ArrayMultiset extends RmitMultiset
 	{
 		array = new String[initialArraySize];
 		arrayLength = 0;
-		instanceCount = 0;
 	}
 
     @Override
 	public void add(String elem) {
-		array[arrayLength] = elem;
-		arrayLength += 1;
-		instanceCount += 1;
+		for (int i = 0; i < arrayLength; i++)
+		{
+			
+		}
     } // end of add()
 
 
     @Override
 	public int search(String elem) {
-        // Implement me!
     	int dupCount = 0;
     	for (int i = 0; i < arrayLength; i++)
     	{

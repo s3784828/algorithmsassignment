@@ -11,10 +11,12 @@ import java.util.List;
 public class BstMultiset extends RmitMultiset
 {
 	private BstNode head;
+	int numNodes;
 	
 	public BstMultiset()
 	{
 		BstNode head = null;
+		numNodes = 0;
 	}
 
     @Override
@@ -24,20 +26,28 @@ public class BstMultiset extends RmitMultiset
     	
     	if (head == null)
     	{
-    		head = new BstNode(item);
-    		System.out.println("added");
+    		head = new BstNode(item + ":" + 1);
+    		numNodes += 1;
     		added = true;
     	}
     	
     	BstNode curr = head;
         while (!added)
         {
-        	if (item.compareToIgnoreCase(curr.value) > 0)
+        	if (curr.value.split(":")[0].equals(item))
+        	{
+        		String[] values = curr.value.split(":");
+        		int instances = Integer.parseInt(values[1]) + 1; 
+        		curr.value = values[0] + ":" + instances;
+        		added = true;
+        	}
+        	
+        	if (item.compareToIgnoreCase(curr.value.split(":")[0]) > 0)
         	{
         		if (curr.right == null)
         		{
-        			System.out.println("RIGHT");
-        			curr.right = new BstNode(item);
+        			curr.right = new BstNode(item + ":" + 1);
+        			numNodes += 1;
         			added = true;
         		}
         		else
@@ -49,8 +59,8 @@ public class BstMultiset extends RmitMultiset
         	{
         		if (curr.left == null)
         		{
-        			System.out.println("LEFT");
-        			curr.left = new BstNode(item);
+        			curr.left = new BstNode(item + ":" + 1);
+        			numNodes += 1;
         			added = true;
         		}
         		else
@@ -59,6 +69,7 @@ public class BstMultiset extends RmitMultiset
         		}
         	}
         }
+        
     } 
 
 
@@ -75,12 +86,13 @@ public class BstMultiset extends RmitMultiset
         
         while ( !searched )
         {
-        	if (curr.value.equals(item))
+        	if (curr.value.split(":")[0].equals(item))
         	{
-        		instanceCount += 1;
+        		instanceCount = Integer.parseInt(curr.value.split(":")[1]);
+        		searched = true;
         	}
         	
-        	if (item.compareTo(curr.value) > 0)
+        	if (item.compareTo(curr.value.split(":")[0]) > 0)
         	{
         		if (curr.right == null)
         		{
@@ -103,9 +115,6 @@ public class BstMultiset extends RmitMultiset
         		}
         	}
         }
-        
-        
-        
         return instanceCount;
     } // end of search()
 
@@ -113,7 +122,15 @@ public class BstMultiset extends RmitMultiset
     @Override
 	public List<String> searchByInstance(int instanceCount) {
     	List<String> list = new SimpleLinkList<String>();
+    	String[] instances = getBstArray();
     	
+    	for (int i = 0; i < numNodes; i++)
+    	{
+    		if (Integer.parseInt(instances[i].split(":")[1]) == instanceCount)
+    		{
+    			list.add(instances[i]);
+    		}
+    	}
               
         return list;
     } // end of searchByInstance    
@@ -132,13 +149,13 @@ public class BstMultiset extends RmitMultiset
         
         while (!searched)
         {
-        	if (curr.value.equals(item))
+        	if (curr.value.split(":")[0].equals(item))
         	{
         		contains = true;
         		searched = true;
         	}
         	
-        	if (item.compareToIgnoreCase(curr.value) > 0)
+        	if (item.compareToIgnoreCase(curr.value.split(":")[0]) > 0)
         	{
         		if (curr.right == null)
         		{
@@ -167,87 +184,42 @@ public class BstMultiset extends RmitMultiset
 
     @Override
 	public void removeOne(String item) {
+        BstNode curr = head;
+        BstNode prev = curr;
+        boolean removedOne = false;
+        
+        
+        
         
     } // end of removeOne()
 
 
     @Override
 	public String print() {
-    	boolean printed = false;
-    	String string = "";
-    	BstNode curr;
     	
-    	BstNode currentQue[] = new BstNode[100];
-    	BstNode otherQue[] = new BstNode[100];
-    	int currentIter = 0;
-    	int currentSize = 1;
-    	int otherIter = 0;
-    	int otherSize = 0;
-    	
-    	int currentLevel = 0;
-    	string += "===== LEVEL: " + currentLevel + "=====" + "\n";
-    	
-    	currentQue[currentIter] = head;
-
-        while (!printed)
-        {
-        	curr = currentQue[currentIter];
-        	string += curr.value + "\n";
-        	
-        	
-        	if (curr.right != null)
-        	{
-        		otherQue[otherIter] = curr.right;
-        		otherIter += 1;
-        		otherSize += 1;
-        	}
-        	if (curr.left != null)
-        	{
-        		otherQue[otherIter] = curr.left;
-        		otherIter += 1;
-        		otherSize += 1;
-        	}
-        	
-        	System.out.println("value: " + curr.value + " level: " + currentLevel + " currentIter: " + currentIter + " otherSize: " + otherSize + " current size: " + currentSize);
-        	
-        	if (currentIter + 1 == currentSize && otherSize != 0)
-        	{
-        		currentQue = otherQue;
-        		currentSize = otherSize;
-        		currentIter = 0;
-        		otherQue = new BstNode[100];
-        		otherSize = 0;
-        		otherIter = 0;
-        		
-        		currentLevel += 1;
-        		string += "===== LEVEL: " + currentLevel + "=====" + "\n";
-        	}
-        	else if (currentIter + 1 == currentSize && otherSize == 0)
-        	{
-        		printed = true;
-        	}
-        	else
-        	{
-        		currentIter += 1;
-        	}
-        }
         
-        return string;
+        return "";
     } // end of OrderedPrint
 
 
     @Override
 	public String printRange(String lower, String upper) {
-
-        // Placeholder, please update.
+    	
+        
         return new String();
     } // end of printRange()
 
 
     @Override
 	public RmitMultiset union(RmitMultiset other) {
+    	RmitMultiset newMultiset = new ArrayMultiset();
+        String numValues[] = getBstArray();
+        
+        for (int i = 0; i < numNodes; i++)
+        {
+        	
+        }
 
-        // Placeholder, please update.
         return null;
     } // end of union()
 
@@ -267,6 +239,65 @@ public class BstMultiset extends RmitMultiset
         return null;
     } // end of difference()
     
+	public String[] getBstArray() {
+    	boolean gotArray = false;
+    	String bstArray[] = new String[numNodes];
+    	int bstArrayIter = 0;
+    	
+    	BstNode curr;
+    	
+    	BstNode currentQue[] = new BstNode[100];
+    	BstNode otherQue[] = new BstNode[100];
+    	int currentIter = 0;
+    	int currentSize = 1;
+    	int otherIter = 0;
+    	int otherSize = 0;
+    	
+    	currentQue[currentIter] = head;
+
+        while (!gotArray)
+        {
+        	curr = currentQue[currentIter];
+        	bstArray[bstArrayIter] = curr.value;
+        	bstArrayIter += 1;
+        	
+        	
+        	if (curr.right != null)
+        	{
+        		otherQue[otherIter] = curr.right;
+        		otherIter += 1;
+        		otherSize += 1;
+        	}
+        	if (curr.left != null)
+        	{
+        		otherQue[otherIter] = curr.left;
+        		otherIter += 1;
+        		otherSize += 1;
+        	}
+        	
+        	if (currentIter + 1 == currentSize && otherSize != 0)
+        	{
+        		currentQue = otherQue;
+        		currentSize = otherSize;
+        		currentIter = 0;
+        		otherQue = new BstNode[100];
+        		otherSize = 0;
+        		otherIter = 0;
+        	}
+        	else if (currentIter + 1 == currentSize && otherSize == 0)
+        	{
+        		gotArray = true;
+        	}
+        	else
+        	{
+        		currentIter += 1;
+        	}
+        }
+        
+        return bstArray;
+    } // end of OrderedPrint
+   
+     
     private class BstNode
     {
     	String value;

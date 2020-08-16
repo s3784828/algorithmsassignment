@@ -157,8 +157,10 @@ public class OrderedLinkedListMultiset extends RmitMultiset
 
     @Override
 	public RmitMultiset union(RmitMultiset other) {
-
-        // Placeholder, please update.
+        RmitMultiset union = new ArrayMultiset();
+        
+        
+        
         return null;
     } // end of union()
 
