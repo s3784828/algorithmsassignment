@@ -1,10 +1,11 @@
 package implementation;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 
-public class SimpleLinkList<Element> extends LinkedList<Element> {
+
+public class SimpleLinkList<Element> extends LinkedList<Element> implements Iterable<Element> {
 	
 	private Node head;
 	private int length;
@@ -68,6 +69,33 @@ public class SimpleLinkList<Element> extends LinkedList<Element> {
 	public int size()
 	{
 		return length;
+	}
+	
+	public Iterator<Element> iterator()
+	{
+		return new SimpleListIterator<Element>(this);
+	}
+	
+	private class SimpleListIterator<Element> implements Iterator<Element>
+	{
+        Node<Element> curr;
+        
+        public SimpleListIterator(SimpleLinkList<Element> list)
+        {
+        	curr = list.head;
+        }
+		
+		@Override
+		public boolean hasNext() {
+			return curr != null;
+		}
+
+		@Override
+		public Element next() {
+			Element value = curr.value;
+			curr = curr.next;
+			return value;
+		}
 	}
 	
 	
