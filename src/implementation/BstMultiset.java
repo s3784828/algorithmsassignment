@@ -304,27 +304,31 @@ public class BstMultiset extends RmitMultiset
     @Override
 	public RmitMultiset union(RmitMultiset other) {
     	RmitMultiset newMultiset = new BstMultiset();
-        String numValues[] = getBstArray();
-        //String otherNumValues = other.getBstArray();
+        String[] otherValuesArray = other.print().split("\n");
+        String[] valuesArray = getBstArray();
+
+        for (int i = 0; i < otherValuesArray.length; i++)
+        {
+        	int addAmount = Integer.parseInt(otherValuesArray[i].split(":")[1]);
+        	String toAdd = otherValuesArray[i].split(":")[0];
+        	
+        	for (int j = 0; j < addAmount; j++)
+        	{
+        		newMultiset.add(toAdd);
+        	}
+        }
         
         for (int i = 0; i < numNodes; i++)
         {
-//        	if (other.contains(numValues[i].split(":")[0]))
-//        	{
-//        		int addSize = (other.search(numValues[i].split(":")[0]) + Integer.parseInt(numValues[i].split(":")[1]));
-//        		
-//        		for (int j = 0; j < addSize; j++)
-//        		{
-//        			newMultiset.add(numValues[i].split(":")[0]);
-//        		}
-//        	}
-//        	else if (contains[i])
+        	int addAmount = Integer.parseInt(valuesArray[i].split(":")[1]);
+        	String toAdd = valuesArray[i].split(":")[0];
         	
-        	
-        	
-        		
+        	for (int j = 0; j < addAmount; j++)
+        	{
+        		newMultiset.add(toAdd);
+        	}
         }
-
+    	
         return newMultiset;
     } // end of union()
 

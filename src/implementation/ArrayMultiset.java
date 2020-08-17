@@ -23,10 +23,29 @@ public class ArrayMultiset extends RmitMultiset
 
     @Override
 	public void add(String elem) {
-		for (int i = 0; i < arrayLength; i++)
+		if (arrayLength == 0)
 		{
-			
+			array[arrayLength] = elem + ":" + 1;
 		}
+		else
+		{
+			boolean alreadyExists = false;
+			for (int i = 0; i < arrayLength; i++)
+			{
+				if (array[i] != null && array[i].split(":")[0].equals(elem))
+				{
+					int newValue = Integer.parseInt(array[i].split(":")[1]) + 1;
+					array[i] = array[i].split(":")[0] + ":" 
+							+ newValue;
+					alreadyExists = true;
+				}
+			}
+			if (!alreadyExists)
+			{
+				array[arrayLength] = elem + ":" + 1;
+			}
+		}
+		arrayLength += 1;
     } // end of add()
 
 
@@ -35,8 +54,10 @@ public class ArrayMultiset extends RmitMultiset
     	int dupCount = 0;
     	for (int i = 0; i < arrayLength; i++)
     	{
-    		if (array[i] != null && array[i].equals(elem))
-    			dupCount += 1;
+    		if (array[i] != null && array[i].split(":")[0].equals(elem))
+    		{
+    			dupCount = Integer.parseInt(array[i].split(":")[1]);
+    		}
     	}
         return dupCount;
     } // end of search()
@@ -45,20 +66,12 @@ public class ArrayMultiset extends RmitMultiset
     @Override
     public List<String> searchByInstance(int instanceCount) {
     	List<String> list = new SimpleLinkList<String>();
-    	String selectedInstance;
-    	int dupCount = 0;
-    	String uniqueValues[] = getUniqueValues();
     	for (int i = 0; i < arrayLength; i++)
     	{
-    		if (uniqueValues[i] != null)
+    		if (array[i] != null 
+    				&& Integer.parseInt(array[i].split(":")[1]) == instanceCount)
     		{
-    			selectedInstance = uniqueValues[i];
-        		dupCount = search(selectedInstance);
-        		if (dupCount == instanceCount)
-        		{
-        			list.add(selectedInstance);
-        		}
-        		dupCount = 0;	
+    			list.add(array[i]);
     		}
     	}
         return list;
@@ -69,7 +82,7 @@ public class ArrayMultiset extends RmitMultiset
         boolean contains = false;
         for (int i = 0; i < arrayLength; i++) 
         {
-        	if (!contains && array[i] != null && array[i].equals(elem))
+        	if (array[i] != null && array[i].split(":")[0].equals(elem))
         		contains = true;
         }
         return contains;
@@ -81,10 +94,18 @@ public class ArrayMultiset extends RmitMultiset
     	boolean removedOne = false;
         for (int i = 0; i < arrayLength; i++)
         {
-        	if (!removedOne && array[i] != null && array[i].equals(elem))
+        	if (!removedOne && array[i] != null && array[i].split(":")[0].equals(elem))
         	{
+        		int numInstances = Integer.parseInt(array[i].split(":")[1]);
+        		if (numInstances > 1)
+        		{
+        			array[i] = array[i].split(":")[0] + ":" + (numInstances - 1);
+        		}
+        		else
+        		{
+        			array[i] = null;
+        		}
         		removedOne = true;
-        		array[i] = null;
         	}
         }
     } // end of removeOne()
@@ -94,13 +115,12 @@ public class ArrayMultiset extends RmitMultiset
 	public String print() {
         
     	String toPrint = "";
-    	String toPrintArray[] = getUniqueValues();
+    	String toPrintArray[] = sortValuesDesc();
     	for (int i = 0; i < arrayLength; i++)
     	{
     		if (toPrintArray[i] != null)
     		{
-    			String selectedInstance = toPrintArray[i];
-    			toPrint += selectedInstance + ":" + search(selectedInstance) + "\n";
+    			toPrint += toPrintArray[i] + "\n";
     		}
     	}
         return toPrint;
@@ -110,16 +130,16 @@ public class ArrayMultiset extends RmitMultiset
     @Override
 	public String printRange(String lower, String upper) {
         String range = "";
-        String uniqueValues[] = getUniqueValues();
+        
         for (int i = 0; i < arrayLength; i++)
         {
-        	if (uniqueValues[i] != null)
+        	if (array[i] != null)
         	{
-        		String value = uniqueValues[i];
+        		String value = array[i].split(":")[0];
         		
         		if (value.compareToIgnoreCase(lower) >= 0 && value.compareToIgnoreCase(upper) <= 0)
         		{
-        			range += value + ":" + search(value) + "\n";
+        			range += array[i] + "\n";
         		}
         	}
         }
@@ -131,64 +151,129 @@ public class ArrayMultiset extends RmitMultiset
     @Override
 	public RmitMultiset union(RmitMultiset other) {
     	
-    	RmitMultiset union = new ArrayMultiset();
-    	String selectedValue = "";
-    	for (int i = 0; i < arrayLength; i++)
-    	{
-    		if (array[i] != null)
-    		{
-    			selectedValue = array[i];
-    			if (other.contains(selectedValue))
-    			{
-    				union.add(selectedValue);
-    			}    			
-    		}	
-    	}
+    	RmitMultiset newMultiset = new BstMultiset();
+        String[] otherValuesArray = other.print().split("\n");
+
+        for (int i = 0; i < otherValuesArray.length; i++)
+        {
+        	int addAmount = Integer.parseInt(otherValuesArray[i].split(":")[1]);
+        	String toAdd = otherValuesArray[i].split(":")[0];
+        	
+        	for (int j = 0; j < addAmount; j++)
+        	{
+        		newMultiset.add(toAdd);
+        	}
+        }
         
-        return union;
+        for (int i = 0; i < arrayLength; i++)
+        {
+        	if (array[i] != null)
+        	{
+        		int addAmount = Integer.parseInt(array[i].split(":")[1]);
+            	String toAdd = array[i].split(":")[0];
+            	
+            	for (int j = 0; j < addAmount; j++)
+            	{
+            		newMultiset.add(toAdd);
+            	}
+        	}
+        }
+        return newMultiset;
     } // end of union()
 
 
     @Override
 	public RmitMultiset intersect(RmitMultiset other) {
+    	RmitMultiset newMultiset = new ArrayMultiset();
+    	for (int i = 0; i < arrayLength; i++)
+        {
+        	if (array[i] != null && other.contains(array[i].split(":")[0]))
+        	{
+        		int numInstances = Integer.parseInt(array[i].split(":")[1]);
+        		int otherNumInstances = other.search(array[i].split(":")[0]);
+        		int addSize = 0;
 
-        // Placeholder, please update.
-        return null;
+        		if (numInstances <= otherNumInstances)
+        		{
+        			addSize = numInstances;
+        		}
+        		else if (otherNumInstances < numInstances)
+        		{
+        			addSize = otherNumInstances;
+        		}
+        		
+        		for (int j = 0; j < addSize; j++)
+        		{
+        			newMultiset.add(array[i].split(":")[0]);
+        		}
+        	}		
+        }
+        return newMultiset;
     } // end of intersect()
 
 
     @Override
 	public RmitMultiset difference(RmitMultiset other) {
 
-        // Placeholder, please update.
-        return null;
+    	RmitMultiset newMultiset = new BstMultiset();
+        for (int i = 0; i < arrayLength; i++)
+        {
+        	if (array[i] != null)
+        	{
+        		int numInstance = Integer.parseInt(array[i].split(":")[1]);
+            	int addSize = 0;
+            	if (other.contains(array[i].split(":")[0]))
+            	{
+            		int otherNumInstance = other.search(array[i].split(":")[0]);
+            		if (numInstance == otherNumInstance || otherNumInstance > numInstance)
+            		{
+            			addSize = 0;
+            		}
+            		else
+            		{
+            			addSize = numInstance - otherNumInstance;
+            		}
+            	}
+            	else
+            	{
+            		addSize = numInstance;
+            	}
+            	
+            	for (int j = 0; j < addSize; j++)
+            	{
+            		newMultiset.add(array[i].split(":")[0]);
+            	}
+        	}
+        }
+        
+        return newMultiset;
     } // end of difference()
     
-    private String[] getUniqueValues()
+    
+    private String[] sortValuesDesc()
     {
-    	String[] uniqueValues = new String[arrayLength];
-    	int uniqueValuesLength = 0;
+    	String toSort[] = array;
+    	
     	for (int i = 0; i < arrayLength; i++)
     	{
-    		if (array[i] != null)
+    		for(int j = 0; j < arrayLength - 1; j++)
     		{
-    			String selectedValue = array[i];
-    			boolean addValue = true;
-    			for (int j = 0; j < uniqueValuesLength; j++)
+    			if (array[j] != null && array[j + 1] != null)
     			{
-    				if (uniqueValues[j].equals(selectedValue))
-    				{
-    					addValue = false;
-    				}
-    			}
-    			if (addValue)
-    			{
-    				uniqueValues[uniqueValuesLength] = selectedValue;
-    				uniqueValuesLength += 1;
+    				int value1 = Integer.parseInt(toSort[j].split(":")[1]);
+        			int value2 = Integer.parseInt(toSort[j + 1].split(":")[1]);
+        			if (value1 < value2)
+        			{
+        				String temp1 = toSort[j];
+        				String temp2 = toSort[j + 1];
+        				toSort[j] = temp2;
+        				toSort[j + 1] = temp1;
+        			}
     			}
     		}
     	}
-    	return uniqueValues;
+    	
+    	return toSort;
     }
 
 } // end of class ArrayMultiset
