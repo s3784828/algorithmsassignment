@@ -82,7 +82,7 @@ public class OrderedLinkedListMultiset extends RmitMultiset
         }
 
         // Placeholder, please update.
-        return count;
+        return count > 0 ? count : searchFailed;
     } // end of search()
 
 
