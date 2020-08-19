@@ -283,7 +283,7 @@ public class OrderedLinkedListMultiset extends RmitMultiset
     			String[] currSplitValue = currNode.value.split(":");
     			
     			int otherInstance = other.search(currSplitValue[0]);
-    			
+    			otherInstance = otherInstance > 0 ? otherInstance : 0;
     			int diffInstance = Integer.parseInt(currSplitValue[1]) - otherInstance;
     			
     			if(diffInstance > 0) {
