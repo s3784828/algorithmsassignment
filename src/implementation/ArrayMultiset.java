@@ -23,28 +23,22 @@ public class ArrayMultiset extends RmitMultiset
 
     @Override
 	public void add(String elem) {
-		if (arrayLength == 0)
+		
+		boolean alreadyExists = false;
+		for (int i = 0; i < arrayLength; i++)
+		{
+			if (!alreadyExists && array[i] != null && array[i].split(":")[0].equals(elem))
+			{
+				int newValue = Integer.parseInt(array[i].split(":")[1]) + 1;
+				array[i] = array[i].split(":")[0] + ":" + newValue;
+				alreadyExists = true;
+			}
+		}
+		if (!alreadyExists)
 		{
 			array[arrayLength] = elem + ":" + 1;
 		}
-		else
-		{
-			boolean alreadyExists = false;
-			for (int i = 0; i < arrayLength; i++)
-			{
-				if (array[i] != null && array[i].split(":")[0].equals(elem))
-				{
-					int newValue = Integer.parseInt(array[i].split(":")[1]) + 1;
-					array[i] = array[i].split(":")[0] + ":" 
-							+ newValue;
-					alreadyExists = true;
-				}
-			}
-			if (!alreadyExists)
-			{
-				array[arrayLength] = elem + ":" + 1;
-			}
-		}
+		
 		arrayLength += 1;
     } // end of add()
 
