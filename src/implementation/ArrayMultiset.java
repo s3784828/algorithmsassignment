@@ -13,7 +13,7 @@ public class ArrayMultiset extends RmitMultiset
 	protected String array[];
 	protected int arrayLength;
 	protected int instanceCount;
-	protected static final int initialArraySize = 10;
+	protected static final int initialArraySize = 100000;
 	
 	public ArrayMultiset()
 	{
@@ -37,15 +37,14 @@ public class ArrayMultiset extends RmitMultiset
 		if (!alreadyExists)
 		{
 			array[arrayLength] = elem + ":" + 1;
+			arrayLength += 1;
 		}
-		
-		arrayLength += 1;
     } // end of add()
 
 
     @Override
 	public int search(String elem) {
-    	int dupCount = 0;
+    	int dupCount = -1;
     	for (int i = 0; i < arrayLength; i++)
     	{
     		if (array[i] != null && array[i].split(":")[0].equals(elem))
@@ -65,7 +64,7 @@ public class ArrayMultiset extends RmitMultiset
     		if (array[i] != null 
     				&& Integer.parseInt(array[i].split(":")[1]) == instanceCount)
     		{
-    			list.add(array[i]);
+    			list.add(array[i].split(":")[0]);
     		}
     	}
         return list;
@@ -109,14 +108,23 @@ public class ArrayMultiset extends RmitMultiset
 	public String print() {
         
     	String toPrint = "";
-    	String toPrintArray[] = sortValuesDesc();
+    	int largestValue = 0;
     	for (int i = 0; i < arrayLength; i++)
     	{
-    		if (toPrintArray[i] != null)
+    		if (array[i] != null && Integer.parseInt(array[i].split(":")[1]) > largestValue)
     		{
-    			toPrint += toPrintArray[i] + "\n";
+    			largestValue = Integer.parseInt(array[i].split(":")[1]);
     		}
     	}
+    	
+    	for(int i = largestValue; i > 0; i--) {
+    		SimpleLinkList<String> list = (SimpleLinkList<String>) searchByInstance(i);
+    		for(String entry : list) {
+    			toPrint += entry + ":" + i + "\n";
+    		}
+    		
+    	}
+    	
         return toPrint;
     } // end of OrderedPrint
 
@@ -243,31 +251,5 @@ public class ArrayMultiset extends RmitMultiset
         return newMultiset;
     } // end of difference()
     
-    
-    private String[] sortValuesDesc()
-    {
-    	String toSort[] = array;
-    	
-    	for (int i = 0; i < arrayLength; i++)
-    	{
-    		for(int j = 0; j < arrayLength - 1; j++)
-    		{
-    			if (array[j] != null && array[j + 1] != null)
-    			{
-    				int value1 = Integer.parseInt(toSort[j].split(":")[1]);
-        			int value2 = Integer.parseInt(toSort[j + 1].split(":")[1]);
-        			if (value1 < value2)
-        			{
-        				String temp1 = toSort[j];
-        				String temp2 = toSort[j + 1];
-        				toSort[j] = temp2;
-        				toSort[j + 1] = temp1;
-        			}
-    			}
-    		}
-    	}
-    	
-    	return toSort;
-    }
 
 } // end of class ArrayMultiset
