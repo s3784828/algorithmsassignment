@@ -47,7 +47,8 @@ public class DualLinkedListMultiset extends RmitMultiset
 					currNode.value = item + ":" + instanceCount;
 					added = true;
 				}
-				else if(!added && currSplitValue[0].compareToIgnoreCase(item) >= 0) {
+				else if(!added && currSplitValue[0].compareToIgnoreCase(item) >= 0 && 
+						(currNode.next == null || currNode.next.value.split(":")[0].compareToIgnoreCase(item) < 0)) {
 					
 						Node tempNode = currNode;
 						Node newNode = new Node(item + ":1");
@@ -129,7 +130,8 @@ public class DualLinkedListMultiset extends RmitMultiset
 						added = true;
 					}
 				}
-				else if(!added && Integer.parseInt(currSplitValue[1]) == 1 && currSplitValue[0].compareToIgnoreCase(item) >= 0) {
+				else if(!added && Integer.parseInt(currSplitValue[1]) == 1 && currSplitValue[0].compareToIgnoreCase(item) >= 0 && 
+						(currNode.next == null || currNode.next.value.split(":")[0].compareToIgnoreCase(item) < 0)) {
 					
 					Node tempNode = currNode;
 					Node newNode = new Node(item + ":1");
