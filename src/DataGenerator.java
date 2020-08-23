@@ -78,7 +78,7 @@ public class DataGenerator
 		return alphabetLower.charAt(mRandGen.nextInt(mEndOfRange - mStartOfRange + 1) + mStartOfRange);
 	}
 	
-	public char getRandomLetters()
+	public char getRandomLetter()
 	{
 		return alphabet.charAt(mRandGen.nextInt(alphabet.length()));
 	}
@@ -88,11 +88,25 @@ public class DataGenerator
 		String randomLetters = "";
 		
 		for (int i = 0; i < sampleSize; i++) {
-			randomLetters +=  getRandomLetters() + " ";
+			randomLetters +=  getRandomLetter() + " ";
 		}
 
 		return randomLetters;
 	} // end of sampleWithReplacement()
+	
+	public String getRandomLettersOrderedDuplicates(int sampleSize)
+	{
+		String randomLetters = "";
+		for (int i = 0; i < sampleSize; i++) {
+			char randomLetter = getRandomLetter();
+			int number = mRandGen.nextInt(10);
+			for (int j = 0; j < number; j++)
+			{
+				randomLetters += randomLetter + " ";
+			}
+		}
+		return randomLetters;
+	}
 
 
 	/**
@@ -231,6 +245,9 @@ public class DataGenerator
 				case "valuesasc":
 					result = gen.getRandomLetters(sampleSize);
 					result = gen.sortValuesAsc(result);
+					break;
+				case "randomdupes":
+					result = gen.getRandomLettersOrderedDuplicates(sampleSize);
 					break;
 				// sampling without replacement
 				case "without":
