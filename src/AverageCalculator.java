@@ -41,11 +41,6 @@ public class AverageCalculator {
 					sum += Float.parseFloat(toCalculate[i]);
 					numValues += 1;
 				}
-				
-				
-				
-				
-
 			} // end of while
 			average = (sum / numValues);
 			System.out.println("average calculated = " + average);
