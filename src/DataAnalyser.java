@@ -29,9 +29,9 @@ public class DataAnalyser {
     	}
         long endTime = System.nanoTime();
         double timeTaken = ((double)(endTime - startTime)) / Math.pow(10, 9);
-        //System.out.println(timeTaken);
-        System.out.println("time taken adding for " + implementationType + ": " + timeTaken + " seconds ");
-        System.out.println(set.print());
+        System.out.println(timeTaken);
+        //System.out.println("time taken adding for " + implementationType + ": " + timeTaken + " seconds ");
+        //System.out.println(set.print());
 	}
 	
 	public static void runRemoveTestsRandom(RmitMultiset set, String implementationType)

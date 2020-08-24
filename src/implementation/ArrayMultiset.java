@@ -27,6 +27,7 @@ public class ArrayMultiset extends RmitMultiset
 		boolean alreadyExists = false;
 		for (int i = 0; i < arrayLength; i++)
 		{
+			
 			if (!alreadyExists && array[i] != null && array[i].split(":")[0].equals(elem))
 			{
 				int newValue = Integer.parseInt(array[i].split(":")[1]) + 1;

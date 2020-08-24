@@ -205,6 +205,53 @@ public class DataGenerator
     	
     	return sorted;
     }
+	
+	private String sortValuesSplit(String toSort)
+	{
+		String array[] = toSort.split("\\s+");
+		int middle = array.length / 2;
+		String middlePoint = array[middle];
+		String finalResult = "";
+		String[] left = new String[array.length];
+		int leftIter = 0;
+		String[] right = new String[array.length];
+		int rightIter = 0;
+		
+		for (int i = 0; i < array.length; i++)
+		{
+			String value1 = array[i];
+			if (value1.compareToIgnoreCase(middlePoint) < 0)
+			{
+				left[leftIter] = value1;
+				leftIter += 1;
+			}
+			else
+			{
+				right[rightIter] = value1;
+				rightIter += 1;
+			}
+		}
+		
+		finalResult += middlePoint + " ";
+		rightIter = 0;
+		leftIter -= 1;
+		
+		for (int i = 0; i < array.length; i++)
+		{
+			if (i % 2 != 0 && right[rightIter] != null)
+			{
+				finalResult += right[rightIter] + " ";
+				rightIter += 1;
+			}
+			else if (leftIter >= 0)
+			{
+				finalResult += left[leftIter] + " ";
+				leftIter -= 1;
+			}
+			
+		}
+		return finalResult;
+	}
 
 
 	/**
@@ -245,6 +292,12 @@ public class DataGenerator
 				case "valuesasc":
 					result = gen.getRandomLetters(sampleSize);
 					result = gen.sortValuesAsc(result);
+					break;
+					
+				case "valuessplit":
+					result = gen.getRandomLetters(sampleSize);
+					result = gen.sortValuesAsc(result);
+					result = gen.sortValuesSplit(result);
 					break;
 				case "randomdupes":
 					result = gen.getRandomLettersOrderedDuplicates(sampleSize);
