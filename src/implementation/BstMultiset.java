@@ -307,20 +307,16 @@ public class BstMultiset extends RmitMultiset
     	{	
     		root = null;
     		numNodes -= 1;
-    		System.out.println(print());
     	}
     	else if (root.right != null && root.left == null)
     	{
     		root = root.right;
     		numNodes -= 1;
-    		System.out.println(print());
-    		
     	}
     	else if (root.right == null && root.left != null)
     	{
     		root = root.left;
     		numNodes -= 1;
-    		System.out.println(print());
     	}
     	else
     	{
@@ -351,8 +347,6 @@ public class BstMultiset extends RmitMultiset
     					removed = true;
     					curr = null;
     					numNodes -= 1;
-    					System.out.println("root" + root.value);
-    					System.out.println(print());
     				}
     				else
     				{
@@ -361,8 +355,6 @@ public class BstMultiset extends RmitMultiset
     					curr = null;
     					numNodes -= 1;
     					removed = true;
-    					System.out.println("root" + root.value);
-    					System.out.println(print());
     				}
     				
     			}
