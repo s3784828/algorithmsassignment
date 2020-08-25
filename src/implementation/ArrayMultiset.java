@@ -213,8 +213,7 @@ public class ArrayMultiset extends RmitMultiset
         }
         return newMultiset;
     } // end of intersect()
-
-
+    
     @Override
 	public RmitMultiset difference(RmitMultiset other) {
 

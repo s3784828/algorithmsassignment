@@ -759,8 +759,7 @@ public class BstMultiset extends RmitMultiset
         }
         return newMultiset;
     } // end of intersect()
-
-
+    
     @Override
 	public RmitMultiset difference(RmitMultiset other) {
     	RmitMultiset newMultiset = new BstMultiset();

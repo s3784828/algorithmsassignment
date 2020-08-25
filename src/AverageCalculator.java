@@ -21,11 +21,23 @@ public class AverageCalculator {
 	public static int numValues = 0;
 	public static float average = 0;
 	
+	public static float sum1 = 0;
+	public static float sum2 = 0;
+	public static float sum3 = 0;
+	
+	public static float average1 = 0;
+	public static float average2 = 0;
+	public static float average3 = 0;
+	
 	public static void processOperations(BufferedReader inReader, PrintWriter outWriter)
 			throws IOException
 		{
 			String line;
 			boolean bQuit = false;
+			
+			boolean intersectCalculation = false;
+			
+			
 
 			// continue reading in commands until we either receive the quit signal or there are no more input commands
 			while (!bQuit && (line = inReader.readLine()) != null) {
@@ -34,17 +46,54 @@ public class AverageCalculator {
 
 				toCalculate = tokens;
 				
-				String printArray = "Testing: ";
 				
-				for (int i = 0; i < toCalculate.length; i++)
+				
+				if (toCalculate[0].contains(":"))
 				{
-					sum += Float.parseFloat(toCalculate[i]);
-					numValues += 1;
+					intersectCalculation = true;
 				}
+				
+				String printArray = "Testing: ";
+
+				if (!intersectCalculation)
+				{
+					for (int i = 0; i < toCalculate.length; i++)
+					{
+						sum += Float.parseFloat(toCalculate[i]);
+						numValues += 1;
+					}
+				}
+				else
+				{
+					for (int i = 0; i < toCalculate.length; i++)
+					{
+						sum1 += Float.parseFloat(toCalculate[i].split(":")[0]);
+						sum2 += Float.parseFloat(toCalculate[i].split(":")[1]);
+						sum3 += Float.parseFloat(toCalculate[i].split(":")[2]);
+						numValues += 1;
+					}
+				}
+				
+				
 			} // end of while
-			average = (sum / numValues);
-			System.out.println("average calculated = " + average);
-			System.out.println("num times calculated = " + numValues);
+			
+			if (!intersectCalculation)
+			{
+				average = (sum / numValues);
+				System.out.println("average calculated = " + average);
+				System.out.println("num times calculated = " + numValues);
+			}
+			else
+			{
+				average1 = (sum1 / numValues);
+				average2 = (sum2 / numValues);
+				average3 = (sum3 / numValues);
+				System.out.println("25% average calculated = " + average1);
+				System.out.println("50% average calculated = " + average2);
+				System.out.println("100% average calculated = " + average3);
+				System.out.println("num times calculated = " + numValues);
+			}
+			
 		} // end of processOperations()
 	
 	/**
