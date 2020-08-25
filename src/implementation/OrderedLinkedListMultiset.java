@@ -67,7 +67,6 @@ public class OrderedLinkedListMultiset extends RmitMultiset
 				}
 			}
 		}
-		System.out.println(print());
     } // end of add()
 
 

@@ -157,7 +157,6 @@ public class DualLinkedListMultiset extends RmitMultiset
 				}
 			}
 		}
-		System.out.println(print());
     } // end of add()
 
 
