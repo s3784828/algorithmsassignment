@@ -41,7 +41,7 @@ public class OrderedLinkedListMultiset extends RmitMultiset
 					added = true;
 				}
 				else if(!added && currSplitValue[0].compareToIgnoreCase(item) >= 0 && 
-						(currNode.next == null || currNode.next.value.split(":")[0].compareToIgnoreCase(item) < 0)) {
+						(currNode.next == null || currNode.next.value.split(":")[0].compareToIgnoreCase(item) >= 0)) {
 						Node tempNode = currNode;
 						Node newNode = new Node(item + ":1");
 						if(prevNode != null) {
@@ -67,6 +67,7 @@ public class OrderedLinkedListMultiset extends RmitMultiset
 				}
 			}
 		}
+		System.out.println(print());
     } // end of add()
 
 
