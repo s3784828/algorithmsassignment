@@ -228,7 +228,7 @@ public class DualLinkedListMultiset extends RmitMultiset
         	
         	//for if the head is the item
         	String[] currSplitValue = currNode.value.split(":");
-        	if(currSplitValue[0] == item) {
+        	if(currSplitValue[0].equals(item)) {
         		int numOfInstances = Integer.parseInt(head.value.split(":")[1]);
         		if(numOfInstances > 1) {
         			numOfInstances--;
@@ -302,6 +302,13 @@ public class DualLinkedListMultiset extends RmitMultiset
     								added = true;
     								
     								
+    							}
+    							//if at end of list
+    							else if(checkNode.next == null) {
+    								checkNode.next = currNode;
+    								currNode.next = null;
+    								
+    								added = true;
     							}
     							prevCheckNode = checkNode;
     							checkNode = checkNode.next;

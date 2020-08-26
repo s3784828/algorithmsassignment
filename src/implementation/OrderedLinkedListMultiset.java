@@ -131,11 +131,11 @@ public class OrderedLinkedListMultiset extends RmitMultiset
         	
         	//for if the head is the item
         	String[] currSplitValue = currNode.value.split(":");
-        	if(currSplitValue[0] == item) {
+        	if(currSplitValue[0].equals(item)) {
         		int numOfInstances = Integer.parseInt(head.value.split(":")[1]);
         		if(numOfInstances > 1) {
         			numOfInstances--;
-        			head.value = currSplitValue[0] + ":" + numOfInstances;
+        			currNode.value = currSplitValue[0] + ":" + numOfInstances;
         		}else {
         			head = head.next;
         		}

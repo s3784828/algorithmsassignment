@@ -37,30 +37,55 @@ public class DataAnalyser {
 	
 	public static void runRemoveTestsRandom(RmitMultiset set, String implementationType)
 	{
+		
+		String outputResult = "";
+		int[] percentRemoved = { 25, 50, 100 };
 		for (int i = 0; i < arrayToTest.length; i++)
 		{
 			set.add(arrayToTest[i]);
 		}
 		
-		String[] toRemove = new String[arrayToTest.length];
 		randGen = new Random(System.currentTimeMillis());
-		for (int i = 0; i < arrayToTest.length; i++)
+		for (int j = 0; j < percentRemoved.length; j++)
 		{
-			toRemove[i] = arrayToTest[randGen.nextInt(arrayToTest.length)];
+			
+			String[] toRemove = new String[arrayToTest.length];
+			for (int i = 0; i < toRemove.length; i++)
+			{	
+				if (randGen.nextInt(100) < percentRemoved[j])
+				{
+					toRemove[i] = arrayToTest[i];
+				}
+			}
+			
+			long startTime = System.nanoTime();
+			for (int i = 0; i < toRemove.length; i++)
+	    	{
+				if(toRemove[i] != null) { 
+					set.removeOne(toRemove[i]);
+				}
+	    	}
+	        long endTime = System.nanoTime();
+	        double timeTaken = ((double)(endTime - startTime)) / Math.pow(10, 9);
+	        if (j != percentRemoved.length - 1)
+	        {
+	        	outputResult += timeTaken + ":"; 
+	        }
+	        else
+	        {	
+	        	outputResult += timeTaken; 
+	        }
+	        //System.out.println(set.print());
+	        
+	        //reset set
+	        for(int i = 0; i < toRemove.length; i++) {
+	        	if(toRemove[i] != null) { 
+	        		set.add(toRemove[i]);
+	        	}
+	        }
+	        	
 		}
-		
-		
-        long startTime = System.nanoTime();
-        for (int j = 0; j < arrayToTest.length; j++)
-    	{
-    		set.removeOne(toRemove[j]);
-    	}
-        long endTime = System.nanoTime();
-        double timeTaken = ((double)(endTime - startTime)) / Math.pow(10, 9);
-        
-        System.out.println(timeTaken);
-        //System.out.println("time taken removing for " + implementationType + ": " + timeTaken + " seconds ");
-        //System.out.println(set.print());
+		System.out.println(outputResult);
 	}
 	
 	public static void runRemoveTestsOrdered(RmitMultiset set, String implementationType)
@@ -80,6 +105,21 @@ public class DataAnalyser {
         System.out.println(timeTaken);
         System.out.println("time taken removing for " + implementationType + ": " + timeTaken + " seconds ");
         System.out.println(set.print());
+	}
+	
+	public static void runPrintTest(RmitMultiset set, String implementationType) {
+		for (int i = 0; i < arrayToTest.length; i++)
+		{
+			set.add(arrayToTest[i]);
+		}
+				
+        long startTime = System.nanoTime();
+        set.print();
+        long endTime = System.nanoTime();
+        double timeTaken = ((double)(endTime - startTime)) / Math.pow(10, 9);
+        System.out.println(timeTaken);
+        //System.out.println("time taken removing for " + implementationType + ": " + timeTaken + " seconds ");
+        //System.out.println(set.print());
 	}
 	
 	public static void runIntersectTests(RmitMultiset set, RmitMultiset set2, String implementationType)
@@ -260,6 +300,10 @@ public class DataAnalyser {
 					
 				case "intersect":
 					runIntersectTests(set, set2, implementationType);
+					break;
+				
+				case "print":
+					runPrintTest(set, implementationType);
 					break;
 					
 			}
