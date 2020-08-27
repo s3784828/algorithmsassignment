@@ -134,6 +134,47 @@ public class DataAnalyser {
 //        System.out.println("time taken removing for " + implementationType + ": " + timeTaken + " seconds ");
         
 	}
+	
+	public static void runContainsTests(RmitMultiset set, String implementationType)
+	{
+		//int similar = 75;
+		String outputResult = "";
+		int[] similars = { 25, 50, 100 };
+		randGen = new Random(System.currentTimeMillis());
+		
+		for (int i = 0; i < arrayToTest.length; i++)
+		{
+			set.add(arrayToTest[i]);
+		}
+
+		long startTime = System.nanoTime();
+		for (int i = 0; i < arrayToTest.length; i++)
+		{	
+			set.contains(arrayToTest[randGen.nextInt(arrayToTest.length)]);
+		}        
+	    long endTime = System.nanoTime();
+	    double timeTaken = ((double)(endTime - startTime)) / Math.pow(10, 9);
+	    outputResult += timeTaken;
+		
+		System.out.println(outputResult);
+//		System.out.println("similarity: " + similar);
+//		System.out.println("set1: ");
+//        System.out.println(set.print());
+//        System.out.println("set2: ");
+//        System.out.println(set2.print());
+				
+//        long startTime = System.nanoTime();
+//        set.intersect(set2);
+//        long endTime = System.nanoTime();
+//        double timeTaken = ((double)(endTime - startTime)) / Math.pow(10, 9);
+        
+//        RmitMultiset set3 = set.intersect(set2);
+//        System.out.println(set3.print());
+        
+        //System.out.println(timeTaken);
+//        System.out.println("time taken removing for " + implementationType + ": " + timeTaken + " seconds ");
+        
+	}
 
 
 	/**
@@ -260,6 +301,10 @@ public class DataAnalyser {
 					
 				case "intersect":
 					runIntersectTests(set, set2, implementationType);
+					break;
+					
+				case "contains":
+					runContainsTests(set, implementationType);
 					break;
 					
 			}

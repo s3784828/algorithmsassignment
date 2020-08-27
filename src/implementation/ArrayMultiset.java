@@ -154,7 +154,7 @@ public class ArrayMultiset extends RmitMultiset
     @Override
 	public RmitMultiset union(RmitMultiset other) {
     	
-    	RmitMultiset newMultiset = new BstMultiset();
+    	RmitMultiset newMultiset = new ArrayMultiset();
         String[] otherValuesArray = other.print().split("\n");
 
         for (int i = 0; i < otherValuesArray.length; i++)
