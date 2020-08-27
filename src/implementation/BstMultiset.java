@@ -229,7 +229,7 @@ public class BstMultiset extends RmitMultiset
 
     @Override
 	public void removeOne(String item) {
-        
+
     	BstNode curr = root;
     	BstNode prev = curr;
     	
@@ -251,7 +251,7 @@ public class BstMultiset extends RmitMultiset
     		boolean searched = false;
     		while(!searched)
     		{
-    			if (item.equals(curr.value.split(":")[0]))
+    			if (curr.value.split(":")[0].equals(item))
     			{
     				int numValues = Integer.parseInt(curr.value.split(":")[1]);
     				if (numValues > 1)
@@ -265,7 +265,6 @@ public class BstMultiset extends RmitMultiset
     				}
     				searched = true;
     			}
-    			
     			if (item.compareToIgnoreCase(curr.value.split(":")[0]) > 0 && !searched)
     			{
     				if (curr.right == null)
@@ -300,7 +299,6 @@ public class BstMultiset extends RmitMultiset
     	
     	BstNode curr = root;
     	BstNode prev = curr;
-    	BstNode toRemove = null;
     	boolean removed = false;
     	
     	if (root.left == null && root.right == null)
@@ -320,7 +318,6 @@ public class BstMultiset extends RmitMultiset
     	}
     	else
     	{
-    		
     		curr = curr.right;
     		
     		while (!removed)
@@ -351,7 +348,7 @@ public class BstMultiset extends RmitMultiset
     				else
     				{
     					root.value = curr.value;
-    					prev.left = null;
+    					prev.left = curr.right;
     					curr = null;
     					numNodes -= 1;
     					removed = true;
@@ -369,21 +366,23 @@ public class BstMultiset extends RmitMultiset
     	
     	if (curr.left == null && curr.right == null)
     	{
-    		if (currValue.compareTo(prevValue) > 0)
+    		if (currValue.compareToIgnoreCase(prevValue) > 0)
     		{
     			prev.right = null;
     			curr = null;
+    			numNodes -= 1;
     		}
     		else
     		{
     			prev.left = null;
     			curr = null;
+    			numNodes -= 1;
     		}
-    		numNodes -= 1;
+    		
     	}
     	else if (curr.left != null && curr.right == null)
     	{
-    		if (currValue.compareTo(prevValue) > 0)
+    		if (currValue.compareToIgnoreCase(prevValue) > 0)
     		{
     			prev.right = curr.left;
     			curr = null;
@@ -398,7 +397,7 @@ public class BstMultiset extends RmitMultiset
     	}
     	else if (curr.left == null && curr.right != null)
     	{
-    		if (currValue.compareTo(prevValue) > 0)
+    		if (currValue.compareToIgnoreCase(prevValue) > 0)
     		{
     			prev.right = curr.right;
     			curr = null;
@@ -420,37 +419,31 @@ public class BstMultiset extends RmitMultiset
     		
     		while(!removed)
     		{
-    			
     			if (curr.left == null)
-        		{
-    				prevValue = prev.value.split(":")[0];
-    		    	currValue = curr.value.split(":")[0];
-    		    	
-    		    	toReplace.value = curr.value;
-    		    	
-    		    	if (currValue.compareTo(prevValue) > 0)
-    		    	{
-    		    		prev.right = null;
-    		    		curr = null;
-    		    	}
-    		    	else
-    		    	{
-    		    		prev.left = null;
-    		    		curr = null;
-    		    	}
-    		    	removed = true;
-    		    	numNodes -= 1;
-        		}
+    			{
+
+    				toReplace.value = curr.value;
+    					
+    				if ( toReplace != prev)
+        		    {
+        		    	prev.left = curr.right;
+        		    }
+    				else
+    				{
+    					toReplace.right = curr.right;
+    				}
+    				
+    				curr = null;
+    				numNodes -= 1;
+    				removed = true;
+    			}
     			else
     			{
     				prev = curr;
     				curr = curr.left;
     			}
-    		}
-    		
-    		
+    		}	
     	}
-    	
     }
 
     @Override
@@ -470,7 +463,17 @@ public class BstMultiset extends RmitMultiset
     	int otherIter = 0;
     	int otherSize = 0;
     	
-    	currentQue[currentIter] = root;
+    	
+    	if (root != null)
+    	{
+    		currentQue[currentIter] = root;
+    		
+    	}
+    	else 
+    	{
+    		searched = true;
+    	}
+    	
     	
         while (!searched)
         {

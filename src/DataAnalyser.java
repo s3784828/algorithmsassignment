@@ -45,10 +45,11 @@ public class DataAnalyser {
 			set.add(arrayToTest[i]);
 		}
 		
+		//System.out.println(set.print());
+		
 		randGen = new Random(System.currentTimeMillis());
 		for (int j = 0; j < percentRemoved.length; j++)
-		{
-			
+		{		
 			String[] toRemove = new String[arrayToTest.length];
 			for (int i = 0; i < toRemove.length; i++)
 			{	
@@ -63,10 +64,13 @@ public class DataAnalyser {
 	    	{
 				if(toRemove[i] != null) { 
 					set.removeOne(toRemove[i]);
+					//System.out.println("after remove: ");
+					//System.out.println(set.print());
 				}
 	    	}
 	        long endTime = System.nanoTime();
 	        double timeTaken = ((double)(endTime - startTime)) / Math.pow(10, 9);
+	        
 	        if (j != percentRemoved.length - 1)
 	        {
 	        	outputResult += timeTaken + ":"; 
@@ -75,6 +79,7 @@ public class DataAnalyser {
 	        {	
 	        	outputResult += timeTaken; 
 	        }
+	        //System.out.println(percentRemoved[j]);
 	        //System.out.println(set.print());
 	        
 	        //reset set
@@ -85,6 +90,48 @@ public class DataAnalyser {
 	        }
 	        	
 		}
+		System.out.println(outputResult);
+	}
+	
+	public static void runRemove(RmitMultiset set, String implementationType)
+	{
+		
+		String outputResult = "";
+		int[] percentRemoved = { 25, 50, 100 };
+		for (int i = 0; i < arrayToTest.length; i++)
+		{
+			set.add(arrayToTest[i]);
+		}
+		
+		System.out.println(set.print());
+		
+		randGen = new Random(System.currentTimeMillis());
+		
+			System.out.println("=====================================");
+			
+			System.out.println(set.print());
+			
+			String[] toRemove = new String[arrayToTest.length];
+			for (int i = 0; i < toRemove.length; i++)
+			{	
+				toRemove[i] = arrayToTest[i];
+				
+				
+			}
+
+			for (int i = 0; i < toRemove.length; i++)
+	    	{
+				
+				set.removeOne(toRemove[i]);
+				System.out.println("----------- " + i + " ----------");
+				System.out.println(set.print());
+	    	}
+
+	        System.out.println(set.print());
+	        
+
+	        	
+		
 		System.out.println(outputResult);
 	}
 	
@@ -350,6 +397,9 @@ public class DataAnalyser {
 				case "contains":
 					runContainsTests(set, implementationType);
 					break;
+					
+				case "remove":
+					runRemove(set, implementationType);
 					
 			}
 			
