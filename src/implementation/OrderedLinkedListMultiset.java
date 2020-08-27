@@ -41,7 +41,7 @@ public class OrderedLinkedListMultiset extends RmitMultiset
 					added = true;
 				}
 				else if(!added && currSplitValue[0].compareToIgnoreCase(item) >= 0 && 
-						(currNode.next == null || currNode.next.value.split(":")[0].compareToIgnoreCase(item) < 0)) {
+						(currNode.next == null || currNode.next.value.split(":")[0].compareToIgnoreCase(item) > 0)) {
 						Node tempNode = currNode;
 						Node newNode = new Node(item + ":1");
 						if(prevNode != null) {
@@ -131,11 +131,11 @@ public class OrderedLinkedListMultiset extends RmitMultiset
         	
         	//for if the head is the item
         	String[] currSplitValue = currNode.value.split(":");
-        	if(currSplitValue[0] == item) {
+        	if(currSplitValue[0].equals(item)) {
         		int numOfInstances = Integer.parseInt(head.value.split(":")[1]);
         		if(numOfInstances > 1) {
         			numOfInstances--;
-        			head.value = currSplitValue[0] + ":" + numOfInstances;
+        			currNode.value = currSplitValue[0] + ":" + numOfInstances;
         		}else {
         			head = head.next;
         		}

@@ -48,7 +48,7 @@ public class DualLinkedListMultiset extends RmitMultiset
 					added = true;
 				}
 				else if(!added && currSplitValue[0].compareToIgnoreCase(item) >= 0 && 
-						(currNode.next == null || currNode.next.value.split(":")[0].compareToIgnoreCase(item) < 0)) {
+						(currNode.next == null || currNode.next.value.split(":")[0].compareToIgnoreCase(item) > 0)) {
 					
 						Node tempNode = currNode;
 						Node newNode = new Node(item + ":1");
@@ -131,7 +131,7 @@ public class DualLinkedListMultiset extends RmitMultiset
 					}
 				}
 				else if(!added && Integer.parseInt(currSplitValue[1]) == 1 && currSplitValue[0].compareToIgnoreCase(item) >= 0 && 
-						(currNode.next == null || currNode.next.value.split(":")[0].compareToIgnoreCase(item) < 0)) {
+						(currNode.next == null || currNode.next.value.split(":")[0].compareToIgnoreCase(item) > 0)) {
 					
 					Node tempNode = currNode;
 					Node newNode = new Node(item + ":1");
@@ -228,7 +228,7 @@ public class DualLinkedListMultiset extends RmitMultiset
         	
         	//for if the head is the item
         	String[] currSplitValue = currNode.value.split(":");
-        	if(currSplitValue[0] == item) {
+        	if(currSplitValue[0].equals(item)) {
         		int numOfInstances = Integer.parseInt(head.value.split(":")[1]);
         		if(numOfInstances > 1) {
         			numOfInstances--;
@@ -302,6 +302,13 @@ public class DualLinkedListMultiset extends RmitMultiset
     								added = true;
     								
     								
+    							}
+    							//if at end of list
+    							else if(checkNode.next == null) {
+    								checkNode.next = currNode;
+    								currNode.next = null;
+    								
+    								added = true;
     							}
     							prevCheckNode = checkNode;
     							checkNode = checkNode.next;
