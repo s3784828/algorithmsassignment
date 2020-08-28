@@ -21,6 +21,12 @@ public class DualLinkedListMultiset extends RmitMultiset
 		instanceHead = null;
 	}
 
+	/*
+	 * This add method finds the position of the new item
+	 * the same way it did for the ordered list, however the
+	 * second list adds this value if it already exist and repositions it
+	 * in accordance with instance count first, then in terms of alphabetical order
+	 */
     @Override
 	public void add(String item) {
     	boolean added = false;
@@ -160,6 +166,11 @@ public class DualLinkedListMultiset extends RmitMultiset
     } // end of add()
 
 
+    /*
+     * This method simply loops through the list until
+     * it finds a matching item, returning the instance number
+     * or searchFailed if no item exists
+     */
     @Override
 	public int search(String item) {
     	int count = 0;
@@ -177,6 +188,12 @@ public class DualLinkedListMultiset extends RmitMultiset
     } // end of search()
 
 
+    /*
+     * This search method iterates through the instance list, finding a matching
+     * instance count. It then adds all values after to the new list until the instance
+     * count differs. Saving time by exiting early as it knows there are no more
+     * matching instance counts
+     */
     @Override
 	public List<String> searchByInstance(int instanceCount) {
     	boolean oneEntryFound = false;
@@ -200,7 +217,11 @@ public class DualLinkedListMultiset extends RmitMultiset
         return list;
     } // end of searchByInstance    
 
-
+    /*
+     * The contains method iterates through the list.
+     * If the matching item is found, it breaks out of the loop
+     * and returns true. Otherwise false
+     */
     @Override
 	public boolean contains(String item) {
     	boolean doesContain = false;
@@ -217,7 +238,13 @@ public class DualLinkedListMultiset extends RmitMultiset
         return doesContain;
     } // end of contains()
 
-
+    /*
+     * The remove one method repeats the same process as the ordered list
+     * with the addition of finding the value within the second list, then once found
+     * it will remove it from the list, subtract its old instance value by one.
+     * Lastly if the instance value is still above 1, it will search for its new
+     * correct position, similar to the add method
+     */
     @Override
 	public void removeOne(String item) {
     	if(head != null && instanceHead != null) {
@@ -328,7 +355,11 @@ public class DualLinkedListMultiset extends RmitMultiset
     	}
     } // end of removeOne()
 
-
+    /*
+     * This print method simply iterates through
+     * the instance list and adds all values to a string
+     * as they are already in instance order
+     */
     @Override
 	public String print() {
     	Node currNode = instanceHead;
@@ -340,7 +371,11 @@ public class DualLinkedListMultiset extends RmitMultiset
         return result;
     } // end of OrderedPrint
 
-
+    /*
+     * This method iterates through the list finding any
+     * items that are between the lower and upper values
+     * and adding them to the final output
+     */
     @Override
 	public String printRange(String lower, String upper) {
 
@@ -358,7 +393,11 @@ public class DualLinkedListMultiset extends RmitMultiset
         return range;
     } // end of printRange()
 
-
+    /*
+     * The union method creates a new ordered list and adds
+     * all items from the list, this process is then repeated with the
+     * other multiset parameter. The resulting list is then returned
+     */
     @Override
 	public RmitMultiset union(RmitMultiset other) {
         RmitMultiset union = new DualLinkedListMultiset();
@@ -391,7 +430,12 @@ public class DualLinkedListMultiset extends RmitMultiset
         return union;
     } // end of union()
 
-
+    /*
+     * This method creates a new OrderedList then iterates though this object's
+     * list. For each value, the search method is use on the other parameter. If
+     * that method returns a value higher than 0, the value is added to the intersect
+     * list equal to the lowest instance count
+     */
     @Override
 	public RmitMultiset intersect(RmitMultiset other) {
 
@@ -420,6 +464,13 @@ public class DualLinkedListMultiset extends RmitMultiset
     } // end of intersect()
 
 
+    /*
+     * This method iterates through the list. For each value
+     * , it searches through the other parameter for any matching
+     * values and subtracts that instance count from it's own. This 
+     * new instance count is the amount of times the value will be added
+     * to the return list
+     */
     @Override
 	public RmitMultiset difference(RmitMultiset other) {
     	

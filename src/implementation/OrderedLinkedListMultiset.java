@@ -16,6 +16,11 @@ public class OrderedLinkedListMultiset extends RmitMultiset
 		head = null;
 	}
 
+	/*
+	 * Add method checks that there is a head, afterwards it 
+	 * iterates through the list and checks different possibilities
+	 * to see where the new node fits
+	*/
     @Override
 	public void add(String item) {
     	boolean added = false;
@@ -70,6 +75,11 @@ public class OrderedLinkedListMultiset extends RmitMultiset
     } // end of add()
 
 
+    /*
+     * This method simply loops through the list until
+     * it finds a matching item, returning the instance number
+     * or searchFailed if no item exists
+     */
     @Override
 	public int search(String item) {
         int count = 0;
@@ -87,6 +97,11 @@ public class OrderedLinkedListMultiset extends RmitMultiset
     } // end of search()
 
 
+    /*
+     * For searching by instances, a SimpleLinkList
+     * is made and all values with a matching instance number
+     * are added to the new list. This list is then the return value
+     */
     @Override
 	public List<String> searchByInstance(int instanceCount) {
     	List<String> list = new SimpleLinkList<String>();
@@ -104,6 +119,11 @@ public class OrderedLinkedListMultiset extends RmitMultiset
     } // end of searchByInstance
 
 
+    /*
+     * The contains method iterates through the list.
+     * If the matching item is found, it breaks out of the loop
+     * and returns true. Otherwise false
+     */
     @Override
 	public boolean contains(String item) {
         boolean doesContain = false;
@@ -121,6 +141,11 @@ public class OrderedLinkedListMultiset extends RmitMultiset
     } // end of contains()
 
 
+    /*
+     * This method finds a matching item and checks its instance count.
+     * If this is above 1, that value is simply decreased, otherwise it
+     * is removed from the list entirely
+     */
     @Override
 	public void removeOne(String item) {
     	if(head != null) {
@@ -167,6 +192,11 @@ public class OrderedLinkedListMultiset extends RmitMultiset
     } // end of removeOne()
 
 
+    /*
+     * The print method finds the value with the largest instance,
+     * then iterates backwards, adding any values returned by
+     * the search by instance method to the final output.
+     */
     @Override
 	public String print() {
     	String result = "";
@@ -193,6 +223,11 @@ public class OrderedLinkedListMultiset extends RmitMultiset
     } // end of OrderedPrint
 
 
+    /*
+     * This method iterates through the list finding any
+     * items that are between the lower and upper values
+     * and adding them to the final output
+     */
     @Override
 	public String printRange(String lower, String upper) {
 
@@ -211,6 +246,11 @@ public class OrderedLinkedListMultiset extends RmitMultiset
     } // end of printRange()
 
 
+    /*
+     * The union method creates a new ordered list and adds
+     * all items from the list, this process is then repeated with the
+     * other multiset parameter. The resulting list is then returned
+     */
     @Override
 	public RmitMultiset union(RmitMultiset other) {
         RmitMultiset union = new OrderedLinkedListMultiset();
@@ -244,6 +284,12 @@ public class OrderedLinkedListMultiset extends RmitMultiset
     } // end of union()
 
 
+    /*
+     * This method creates a new OrderedList then iterates though this object's
+     * list. For each value, the search method is use on the other parameter. If
+     * that method returns a value higher than 0, the value is added to the intersect
+     * list equal to the lowest instance count
+     */
     @Override
 	public RmitMultiset intersect(RmitMultiset other) {
 
@@ -272,6 +318,14 @@ public class OrderedLinkedListMultiset extends RmitMultiset
     } // end of intersect()
 
 
+    /*
+     * This method iterates through the list. For each value
+     * , it searches through the other parameter for any matching
+     * values and subtracts that instance count from it's own. This 
+     * new instance count is the amount of times the value will be added
+     * to the return list
+     */
+    
     @Override
 	public RmitMultiset difference(RmitMultiset other) {
     	
@@ -299,7 +353,10 @@ public class OrderedLinkedListMultiset extends RmitMultiset
         return difference;
     } // end of difference()
     
-    
+    /*
+     * A simple node class with a value and a reference to the next node
+     * The next value is null by default
+     */
     private class Node{
     	protected String value;
     	protected Node next;
