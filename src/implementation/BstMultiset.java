@@ -868,7 +868,7 @@ public class BstMultiset extends RmitMultiset
 	 * once a level of the tree has been iterated it switches que over and repeats
 	 * the process to all values of the tree have been searched.
 	 * 
-	 * difference 
+	 * difference is implemented similar to other data structures.
 	 */
     
     @Override
