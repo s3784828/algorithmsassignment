@@ -20,6 +20,11 @@ public class ArrayMultiset extends RmitMultiset
 		array = new String[initialArraySize];
 		arrayLength = 0;
 	}
+	
+	/**
+	 * Array needs to iterate previous values before being able to
+	 * add a new one, this is to ensure the added value is not a duplicate.
+	 */
 
     @Override
 	public void add(String elem) {
@@ -42,20 +47,30 @@ public class ArrayMultiset extends RmitMultiset
 		}
     } // end of add()
 
+    /**
+	 * To search for an element the array must iterate through
+	 * the entire array to find the respective value.
+	 */
 
     @Override
 	public int search(String elem) {
     	int dupCount = -1;
+    	boolean searched = false;
     	for (int i = 0; i < arrayLength; i++)
     	{
-    		if (array[i] != null && array[i].split(":")[0].equals(elem))
+    		if (!searched && array[i] != null && array[i].split(":")[0].equals(elem))
     		{
     			dupCount = Integer.parseInt(array[i].split(":")[1]);
+    			searched = true;
     		}
     	}
         return dupCount;
     } // end of search()
 
+    /**
+	 * To search for a number of elements the array must search
+	 * all of its values to find certain instance count
+	 */
 
     @Override
     public List<String> searchByInstance(int instanceCount) {
@@ -70,19 +85,30 @@ public class ArrayMultiset extends RmitMultiset
     	}
         return list;
     } // end of searchByInstance
+    
+    /**
+     * To find if a value is contained in an array it must search through
+     * all its values until its finds a matching element.
+     */
 
     @Override
 	public boolean contains(String elem) {
         boolean contains = false;
         for (int i = 0; i < arrayLength; i++) 
         {
-        	if (array[i] != null && array[i].split(":")[0].equals(elem))
+        	if (!contains && array[i] != null && array[i].split(":")[0].equals(elem))
         		contains = true;
         }
         return contains;
     } // end of contains()
 
-
+    /**
+     * If a unique value is removed it will replace the value with null, my implementation of the array
+     * multiset is a fixed size and as such did not seem neccessary to resize to prevent null values. 
+     * one of the advantages of the array structure is the speed in being able to remove and add values
+     * rather than creating new nodes, and scuch I wanted the array multiset to take advantage of it.
+     */
+    
     @Override
 	public void removeOne(String elem) {
     	boolean removedOne = false;
@@ -104,7 +130,11 @@ public class ArrayMultiset extends RmitMultiset
         }
     } // end of removeOne()
 
-
+    /**
+     * Print finds the largest value first and uses search by instance
+     * to add them to the link list implementation.
+     */
+    
     @Override
 	public String print() {
         
@@ -129,7 +159,11 @@ public class ArrayMultiset extends RmitMultiset
         return toPrint;
     } // end of OrderedPrint
 
-
+    /**
+     * PrintRange has a result string that iterates through the entire array
+     * and adds the values if they fit into the certain bounds.
+     */
+    
     @Override
 	public String printRange(String lower, String upper) {
         String range = "";
@@ -150,13 +184,21 @@ public class ArrayMultiset extends RmitMultiset
         return range;
     } // end of printRange()
 
-
+    /**
+     * Union iterates through both arrays, duplicate values calculations are negated
+     * by simply using the add function to work out similar values. 
+     * The other RmitMultiset is turned into an array via the split function, this sort
+     * of implementation is different to the type casting conducted in the other data structures.
+     * Since the ArrayMultiset is an array, it did not seem unreasonable to create an array
+     * out of the print and split function, additionally it meant I did have to create additional methods.
+     */
+    
     @Override
 	public RmitMultiset union(RmitMultiset other) {
     	
-    	RmitMultiset newMultiset = new BstMultiset();
+    	RmitMultiset newMultiset = new ArrayMultiset();
         String[] otherValuesArray = other.print().split("\n");
-
+ 
         for (int i = 0; i < otherValuesArray.length; i++)
         {
         	int addAmount = Integer.parseInt(otherValuesArray[i].split(":")[1]);
@@ -184,7 +226,10 @@ public class ArrayMultiset extends RmitMultiset
         return newMultiset;
     } // end of union()
 
-
+    /**
+     * Intersect utilizes contains to iterate through each value of the array
+     */
+    
     @Override
 	public RmitMultiset intersect(RmitMultiset other) {
     	RmitMultiset newMultiset = new ArrayMultiset();
@@ -213,6 +258,10 @@ public class ArrayMultiset extends RmitMultiset
         }
         return newMultiset;
     } // end of intersect()
+    
+    /**
+     * Difference follows a similar structure to the array method.
+     */
     
     @Override
 	public RmitMultiset difference(RmitMultiset other) {

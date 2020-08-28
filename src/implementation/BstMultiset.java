@@ -18,6 +18,18 @@ public class BstMultiset extends RmitMultiset
 		BstNode root = null;
 		numNodes = 0;
 	}
+	
+	/**
+	 * Add does not used a recursive implementation
+	 * Ultimately I would rather use a recursive implementation 
+	 * for binary search tree however this was implemented 
+	 * before I knew we could make our own methods and as such
+	 * did not have time to change the implementation.
+	 * 
+	 * Values greater than the root are made right node 
+	 * and values less are made left node, an iterator iterates
+	 * through the tree.
+	 */
 
     @Override
 	public void add(String item) {
@@ -73,7 +85,12 @@ public class BstMultiset extends RmitMultiset
         
     } 
 
-
+    /**
+	 * An iterator tries to find the particular element by iterating
+	 * through the respective nodes greater than or equal to the item it 
+	 * is searching for.
+	 */
+    
     @Override
 	public int search(String item) {
         BstNode curr = root;
@@ -119,6 +136,19 @@ public class BstMultiset extends RmitMultiset
         return instanceCount;
     } // end of search()
 
+    /**
+	 * ALL IMPLEMENTATIONS THAT REQUIRE SEARCHING THROUGH THE ENTIRE
+	 * BINARY SEARCH TREE INVOLVE THE 2 QUE IMPLEMENTATION OF SEARCHING
+	 * 
+	 * A 2 que implementation is used to find every element 
+	 * in the binary search tree, one que is used to show the current level being
+	 * iterated and the other que is used to show the next que being iterated
+	 * once a level of the tree has been iterated it switches que over and repeats
+	 * the process to all values of the tree have been searched.
+	 * 
+	 * search by instance searches each value and adds them to a list
+	 * depending on if their duplicate counts are equals to inserted instance count
+	 */
 
     @Override
 	public List<String> searchByInstance(int instanceCount) {
@@ -180,6 +210,9 @@ public class BstMultiset extends RmitMultiset
         return list;
     } // end of searchByInstance    
 
+    /**
+	 * contains iterates through each node depending on the item it is searching for
+	 */
 
     @Override
 	public boolean contains(String item) {
@@ -225,11 +258,25 @@ public class BstMultiset extends RmitMultiset
         }
         return contains;
     } // end of contains()
+    
+    /**
+     * In a previous comment for add I mentioned that 
+     * I did not know methods could be added, luckily removeOne was implemented
+     * much later into the life cycle of this and as such features two methods removeRoot
+     * and removeLeaf. Keep in mind these methods are not recursive, despite 
+     * implementing this method with the knowledge of being able to add methods
+     * i felt it was neccessary to not use a recursive approach to removing and keep 
+     * the entirety of the bst's method iterable as opposed to some recursive and some not 
+     * recursive. 
+     * 
+     * removeOne uses two methods removeLeaf and removeRoot, they are only called
+     * if the value being removed has only one value.
+     */
 
 
     @Override
 	public void removeOne(String item) {
-        
+
     	BstNode curr = root;
     	BstNode prev = curr;
     	
@@ -251,7 +298,7 @@ public class BstMultiset extends RmitMultiset
     		boolean searched = false;
     		while(!searched)
     		{
-    			if (item.equals(curr.value.split(":")[0]))
+    			if (curr.value.split(":")[0].equals(item))
     			{
     				int numValues = Integer.parseInt(curr.value.split(":")[1]);
     				if (numValues > 1)
@@ -265,7 +312,6 @@ public class BstMultiset extends RmitMultiset
     				}
     				searched = true;
     			}
-    			
     			if (item.compareToIgnoreCase(curr.value.split(":")[0]) > 0 && !searched)
     			{
     				if (curr.right == null)
@@ -300,7 +346,6 @@ public class BstMultiset extends RmitMultiset
     	
     	BstNode curr = root;
     	BstNode prev = curr;
-    	BstNode toRemove = null;
     	boolean removed = false;
     	
     	if (root.left == null && root.right == null)
@@ -320,7 +365,6 @@ public class BstMultiset extends RmitMultiset
     	}
     	else
     	{
-    		
     		curr = curr.right;
     		
     		while (!removed)
@@ -351,7 +395,7 @@ public class BstMultiset extends RmitMultiset
     				else
     				{
     					root.value = curr.value;
-    					prev.left = null;
+    					prev.left = curr.right;
     					curr = null;
     					numNodes -= 1;
     					removed = true;
@@ -369,21 +413,23 @@ public class BstMultiset extends RmitMultiset
     	
     	if (curr.left == null && curr.right == null)
     	{
-    		if (currValue.compareTo(prevValue) > 0)
+    		if (currValue.compareToIgnoreCase(prevValue) > 0)
     		{
     			prev.right = null;
     			curr = null;
+    			numNodes -= 1;
     		}
     		else
     		{
     			prev.left = null;
     			curr = null;
+    			numNodes -= 1;
     		}
-    		numNodes -= 1;
+    		
     	}
     	else if (curr.left != null && curr.right == null)
     	{
-    		if (currValue.compareTo(prevValue) > 0)
+    		if (currValue.compareToIgnoreCase(prevValue) > 0)
     		{
     			prev.right = curr.left;
     			curr = null;
@@ -398,7 +444,7 @@ public class BstMultiset extends RmitMultiset
     	}
     	else if (curr.left == null && curr.right != null)
     	{
-    		if (currValue.compareTo(prevValue) > 0)
+    		if (currValue.compareToIgnoreCase(prevValue) > 0)
     		{
     			prev.right = curr.right;
     			curr = null;
@@ -420,38 +466,48 @@ public class BstMultiset extends RmitMultiset
     		
     		while(!removed)
     		{
-    			
     			if (curr.left == null)
-        		{
-    				prevValue = prev.value.split(":")[0];
-    		    	currValue = curr.value.split(":")[0];
-    		    	
-    		    	toReplace.value = curr.value;
-    		    	
-    		    	if (currValue.compareTo(prevValue) > 0)
-    		    	{
-    		    		prev.right = null;
-    		    		curr = null;
-    		    	}
-    		    	else
-    		    	{
-    		    		prev.left = null;
-    		    		curr = null;
-    		    	}
-    		    	removed = true;
-    		    	numNodes -= 1;
-        		}
+    			{
+
+    				toReplace.value = curr.value;
+    					
+    				if ( toReplace != prev)
+        		    {
+        		    	prev.left = curr.right;
+        		    }
+    				else
+    				{
+    					toReplace.right = curr.right;
+    				}
+    				
+    				curr = null;
+    				numNodes -= 1;
+    				removed = true;
+    			}
     			else
     			{
     				prev = curr;
     				curr = curr.left;
     			}
-    		}
-    		
-    		
+    		}	
     	}
-    	
     }
+    
+    /**
+	 * ALL IMPLEMENTATIONS THAT REQUIRE SEARCHING THROUGH THE ENTIRE
+	 * BINARY SEARCH TREE INVOLVE THE 2 QUE IMPLEMENTATION OF SEARCHING
+	 * 
+	 * A 2 que implementation is used to find every element 
+	 * in the binary search tree, one que is used to show the current level being
+	 * iterated and the other que is used to show the next que being iterated
+	 * once a level of the tree has been iterated it switches que over and repeats
+	 * the process to all values of the tree have been searched.
+	 * 
+	 * print follows a similar method of calculation found in other data structures
+	 * of finding the largest value and iterating starting from that value and using 
+	 * search by instance to find the largest value. This gives conclusive results to
+	 * analyse the different data structures
+	 */
 
     @Override
 	public String print() {
@@ -470,7 +526,17 @@ public class BstMultiset extends RmitMultiset
     	int otherIter = 0;
     	int otherSize = 0;
     	
-    	currentQue[currentIter] = root;
+    	
+    	if (root != null)
+    	{
+    		currentQue[currentIter] = root;
+    		
+    	}
+    	else 
+    	{
+    		searched = true;
+    	}
+    	
     	
         while (!searched)
         {
@@ -524,7 +590,13 @@ public class BstMultiset extends RmitMultiset
         return toPrint;
     } // end of OrderedPrint
 
-
+    /**
+	 * Print range is a hybrid of the 2 que
+	 * system, instead of using the other que to store values of the next
+	 * level, now the other que only stores values in the certain specified
+	 * range.
+	 */
+    
     @Override
 	public String printRange(String lower, String upper) {
     	
@@ -602,6 +674,19 @@ public class BstMultiset extends RmitMultiset
         return toPrint;
     } 
 
+    /**
+	 * ALL IMPLEMENTATIONS THAT REQUIRE SEARCHING THROUGH THE ENTIRE
+	 * BINARY SEARCH TREE INVOLVE THE 2 QUE IMPLEMENTATION OF SEARCHING
+	 * 
+	 * A 2 que implementation is used to find every element 
+	 * in the binary search tree, one que is used to show the current level being
+	 * iterated and the other que is used to show the next que being iterated
+	 * once a level of the tree has been iterated it switches que over and repeats
+	 * the process to all values of the tree have been searched.
+	 * 
+	 * union essentially uses the 2 que method twice, simply changing the starting node
+	 * to iterate through at the end of iterating through the first tree.
+	 */
 
     @Override
 	public RmitMultiset union(RmitMultiset other) {
@@ -681,6 +766,19 @@ public class BstMultiset extends RmitMultiset
 
     } // end of union()
     
+    /**
+	 * ALL IMPLEMENTATIONS THAT REQUIRE SEARCHING THROUGH THE ENTIRE
+	 * BINARY SEARCH TREE INVOLVE THE 2 QUE IMPLEMENTATION OF SEARCHING
+	 * 
+	 * A 2 que implementation is used to find every element 
+	 * in the binary search tree, one que is used to show the current level being
+	 * iterated and the other que is used to show the next que being iterated
+	 * once a level of the tree has been iterated it switches que over and repeats
+	 * the process to all values of the tree have been searched.
+	 * 
+	 * intersect follows similar implementation to the other data structures.
+	 */
+    
     @Override
 	public RmitMultiset intersect(RmitMultiset other) {
     	RmitMultiset newMultiset = new BstMultiset();
@@ -759,6 +857,19 @@ public class BstMultiset extends RmitMultiset
         }
         return newMultiset;
     } // end of intersect()
+    
+    /**
+	 * ALL IMPLEMENTATIONS THAT REQUIRE SEARCHING THROUGH THE ENTIRE
+	 * BINARY SEARCH TREE INVOLVE THE 2 QUE IMPLEMENTATION OF SEARCHING
+	 * 
+	 * A 2 que implementation is used to find every element 
+	 * in the binary search tree, one que is used to show the current level being
+	 * iterated and the other que is used to show the next que being iterated
+	 * once a level of the tree has been iterated it switches que over and repeats
+	 * the process to all values of the tree have been searched.
+	 * 
+	 * difference is implemented similar to other data structures.
+	 */
     
     @Override
 	public RmitMultiset difference(RmitMultiset other) {

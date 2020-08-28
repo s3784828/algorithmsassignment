@@ -3,10 +3,17 @@ package implementation;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-
+/**
+ * Simple link list implementation to be used for adding values and analysing
+ * data structures created in the implementation folder.
+ * 
+ * @author Tristan Macaulay s3784828
+ *
+ * @param <Element>
+ */
 
 public class SimpleLinkList<Element> extends LinkedList<Element> implements Iterable<Element> {
-	
+
 	private Node head;
 	private int length;
 	

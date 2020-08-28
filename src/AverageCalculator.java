@@ -5,14 +5,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 
-import implementation.ArrayMultiset;
-import implementation.BstMultiset;
-import implementation.DualLinkedListMultiset;
-import implementation.OrderedLinkedListMultiset;
-import implementation.RmitMultiset;
+
+/**
+ * Calculates averages from files of data
+ * 
+ * @author Tristan Macaulay
+ *
+ */
 
 public class AverageCalculator {
 	
@@ -36,12 +36,9 @@ public class AverageCalculator {
 			boolean bQuit = false;
 			
 			boolean intersectCalculation = false;
-			
-			
 
-			// continue reading in commands until we either receive the quit signal or there are no more input commands
 			while (!bQuit && (line = inReader.readLine()) != null) {
-				// tokens can be separted by one or more whitespaces
+
 				String[] tokens = line.split("\\s+");
 
 				toCalculate = tokens;
@@ -95,20 +92,14 @@ public class AverageCalculator {
 			}
 			
 		} // end of processOperations()
-	
-	/**
-	 * Main method.  Determines which implementation to test.
-	 */
-	public static void main(String[] args) {
 
+	public static void main(String[] args) {
 
 		String outFilename = null;
 		if (args.length == 1) {
 			outFilename = args[0];
 		}
-
-
-		// construct in and output streams/writers/readers, then process each operation.
+		
 		BufferedReader inReader = new BufferedReader(new InputStreamReader(System.in));
 		PrintWriter outWriter = new PrintWriter(System.out, true);
 
@@ -116,16 +107,13 @@ public class AverageCalculator {
 			try {
 				outWriter = new PrintWriter(new FileWriter(outFilename), true);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 
-		// process the operations
 		try {
 			processOperations(inReader, outWriter);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	} // end of main()
