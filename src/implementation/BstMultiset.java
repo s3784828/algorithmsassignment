@@ -68,7 +68,7 @@ public class BstMultiset extends RmitMultiset
         			curr = curr.right;
         		}
         	}
-        	else if (item.compareToIgnoreCase(curr.value.split(":")[0]) <= 0 && !added)
+        	else if (!added)
         	{
         		if (curr.left == null)
         		{
