@@ -233,12 +233,19 @@ public class ArrayMultiset extends RmitMultiset
     @Override
 	public RmitMultiset intersect(RmitMultiset other) {
     	RmitMultiset newMultiset = new ArrayMultiset();
+    	int otherNumInstances = 0;
     	for (int i = 0; i < arrayLength; i++)
         {
-        	if (array[i] != null && other.contains(array[i].split(":")[0]))
+    		if (array[i] != null)
+    		{
+    			otherNumInstances = other.search(array[i].split(":")[0]);
+    		}
+    		
+    		
+        	if (otherNumInstances > 0)
         	{
+        		
         		int numInstances = Integer.parseInt(array[i].split(":")[1]);
-        		int otherNumInstances = other.search(array[i].split(":")[0]);
         		int addSize = 0;
 
         		if (numInstances <= otherNumInstances)
@@ -254,7 +261,9 @@ public class ArrayMultiset extends RmitMultiset
         		{
         			newMultiset.add(array[i].split(":")[0]);
         		}
-        	}		
+        	}
+        	
+        	otherNumInstances = 0;
         }
         return newMultiset;
     } // end of intersect()

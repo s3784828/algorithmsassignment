@@ -184,6 +184,29 @@ public class DataAnalyser {
 		
 		System.out.println(outputResult);
 	}
+	
+	public static void runSearchTests(RmitMultiset set, String implementationType)
+	{
+		String outputResult = "";
+		int[] similars = { 25, 50, 100 };
+		randGen = new Random(System.currentTimeMillis());
+		
+		for (int i = 0; i < arrayToTest.length; i++)
+		{
+			set.add(arrayToTest[i]);
+		}
+
+		long startTime = System.nanoTime();
+		for (int i = 0; i < arrayToTest.length; i++)
+		{	
+			set.search(arrayToTest[randGen.nextInt(arrayToTest.length)]);
+		}        
+	    long endTime = System.nanoTime();
+	    double timeTaken = ((double)(endTime - startTime)) / Math.pow(10, 9);
+	    outputResult += timeTaken;
+		
+		System.out.println(outputResult);
+	}
 
 	public static void processOperations(BufferedReader inReader, PrintWriter outWriter)
 		throws IOException

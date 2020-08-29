@@ -27,8 +27,7 @@ public class BstMultiset extends RmitMultiset
 	 * did not have time to change the implementation.
 	 * 
 	 * Values greater than the root are made right node 
-	 * and values less are made left node, an iterator iterates
-	 * through the tree.
+	 * and values less are made left node.
 	 */
 
     @Override
@@ -802,11 +801,12 @@ public class BstMultiset extends RmitMultiset
         while (!searched)
         {
         	curr = currentQue[currentIter];
- 	
-        	if (other.contains(curr.value.split(":")[0]))
+        	otherNumInstances = other.search(curr.value.split(":")[0]);
+        	//if (other.contains(curr.value.split(":")[0]))
+        	if (otherNumInstances > 0)
         	{
         		numInstances = Integer.parseInt(curr.value.split(":")[1]);
-        		otherNumInstances = other.search(curr.value.split(":")[0]);
+        		//otherNumInstances = other.search(curr.value.split(":")[0]);
         		addSize = 0;
 
         		if (numInstances <= otherNumInstances)
